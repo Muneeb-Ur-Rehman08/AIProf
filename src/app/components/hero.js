@@ -62,26 +62,26 @@ const Hero = () => {
                       <ul className="sc-list">
                         <li className="sc-item" title="Facebook">
                           <a className="sc-link" id="facebookShareLink" href="#0" title="social media icon">
-                            {/* <i className="fab fa-facebook-f sc-icon"></i> */}
-                            <FaFacebookF className='sc-icon fab fa-facebook-f' />
+                            <i className="fab fa-facebook-f sc-icon"></i>
+                            {/* <FaFacebookF className='sc-icon fab fa-facebook-f' /> */}
                           </a>
                         </li>
                         <li className="sc-item" title="twitter">
                           <a className="sc-link" id="twitterShareLink" href="#0" title="social media icon">
-                            {/* <i className="fab fa-twitter sc-icon"></i>   */}
-                            <FaTwitter className='sc-icon fab fa-twitter' />
+                            <i className="fab fa-twitter sc-icon"></i>  
+                            {/* <FaTwitter className='sc-icon fab fa-twitter' /> */}
                           </a>
                         </li>
                         <li className="sc-item" title="Whatsapp">
                           <a className="sc-link" id="whatsappShareLink" href="#0" title="social media icon">
-                            {/* <i className="fab fa-whatsapp sc-icon"></i> */}
-                            <FaWhatsapp className='sc-icon fab fa-whatsapp' />
+                            <i className="fab fa-whatsapp sc-icon"></i>
+                            {/* <FaWhatsapp className='sc-icon fab fa-whatsapp' /> */}
                           </a>
                         </li>
                         <li className="sc-item" title="youtube">
                           <a className="sc-link" href="https://www.youtube.com/channel/UC0eO8rFeVcQMY_RDUjzu1Gw/featured" title="youtube channel" target="_blank" rel="noopener noreferrer">
-                            {/* <i className="fab fa-youtube sc-icon"></i> */}
-                            <FaYoutube className='sc-icon fab fa-youtube' />
+                            <i className="fab fa-youtube sc-icon"></i>
+                            {/* <FaYoutube className='sc-icon fab fa-youtube' /> */}
                           </a>
                         </li>
                       </ul>
