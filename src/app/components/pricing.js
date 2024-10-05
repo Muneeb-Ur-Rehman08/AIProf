@@ -20,14 +20,14 @@ const Pricing = () => {
 							</div>
 						</div>
 
-						<div className="plan-details" style={{margin: "30px"}}>
+						<div className="plan-details" style={{marginTop: "30px"}}>
 							<ul className="plan-list">
 								<li className="plan-feat">
 									<span className="feat-text">Ask Me Anything About Learning</span>
 								</li>
 							</ul>
 						</div>
-						<div className="plan-cta" style={{margin: "60px"}}><a className="cta-btn btn-outline " href="#ask-social">Try Now</a></div>
+						<div className="plan-cta" style={{marginTop: "60px"}}><a className="cta-btn btn-outline " href="#ask-social">Try Now</a></div>
 					</div>
 				</div>
 				<div className="col-12  col-md-6 col-xl-3  mx-auto price-plan ">

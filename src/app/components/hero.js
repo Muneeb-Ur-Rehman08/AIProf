@@ -3,10 +3,6 @@ import TD_Animation_Style_Einstein_front from '../../assets/images/hero/3D_Anima
 import classNameroomScenario from '../../assets/images/sections-bg-images/classroomScenario.jpg';
 import mic from '../../assets/images/mic/mic.svg';
 import muteMic from '../../assets/images/mic/muteMic.svg';
-import { FaFacebookF } from "react-icons/fa";
-import { FaTwitter } from "react-icons/fa";
-import { FaWhatsapp } from "react-icons/fa";
-import { FaYoutube } from "react-icons/fa";
 import particalConfig from '../particals/partical.config';
 import Particles from '@tsparticles/react';
 

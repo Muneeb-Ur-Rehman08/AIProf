@@ -1,5 +1,8 @@
 import './css/main-LTR.css';
 import './css/home.css';
+import './css/vendors/flaticon/flaticon.css';
+import '@fortawesome/fontawesome-free/css/all.min.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 import MainPage from './app/pages/main';
 import { useEffect, React } from 'react';
 import { initParticlesEngine } from '@tsparticles/react';
