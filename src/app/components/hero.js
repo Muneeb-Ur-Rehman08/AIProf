@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
-import TD_Animation_Style_Einstein_front from '../../assets/images/hero/3D_Animation_Style_Einstein_front.png';
-import classNameroomScenario from '../../assets/images/sections-bg-images/classroomScenario.jpg';
-import mic from '../../assets/images/mic/mic.svg';
-import muteMic from '../../assets/images/mic/muteMic.svg';
-import particalConfig from '../particals/partical.config';
 import Particles from '@tsparticles/react';
-
-// import '../../css/home.css';
+import mic from '../../assets/images/mic/mic.svg';
+import particalConfig from '../particals/partical.config';
+import muteMic from '../../assets/images/mic/muteMic.svg';
+import classNameroomScenario from '../../assets/images/sections-bg-images/classroomScenario.jpg';
+import TD_Animation_Style_Einstein_front from '../../assets/images/hero/3D_Animation_Style_Einstein_front.png';
 
 const particlesLoaded = (container) => {
   console.log(container);
@@ -38,7 +36,7 @@ const Hero = () => {
     <section className="page-hero d-flex align-items-center" id="page-hero">
       <div className="overlay-photo-image-bg" style={{ backgroundImage: `url(${classNameroomScenario})`, opacity: 0.2 }}></div>
       {/* <div className="particles-js dots" id="particles-js"></div> */}
-      <Particles options={particalConfig} className='particles-js dots' />
+      <Particles id="particles-js" options={particalConfig} className='particles-js dots' />
       <div className="container">
         <div className="row">
           <div className="col-12 col-lg-6 pt-5 mt-2">

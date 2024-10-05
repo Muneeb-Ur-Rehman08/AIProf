@@ -48,7 +48,7 @@ const About = ({ activeSection, startCounter, setStartCounter }) => {
                   <div className="row" id="featuresAbout">
                     <div className="col-9 col-xl-6">
                       <div className="info-item">
-                        <i classNameName="fas fa-universal-access info-icon"></i>
+                        <i className="fas fa-universal-access info-icon"></i>
                         <div className="info-content text-center">
                           <h5 className="info-title">Dedicated to accessibility</h5>
                         </div>

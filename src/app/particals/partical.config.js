@@ -1,10 +1,11 @@
 const particalConfig = {
+  fullScreen: { enable: true }, // Optional to enable full-screen mode
   particles: {
     number: {
       value: 150,
       density: {
         enable: true,
-        value_area: 500,
+        area: 500,
       },
     },
     color: {
@@ -17,7 +18,7 @@ const particalConfig = {
         color: "#000000",
       },
       polygon: {
-        nb_sides: 5,
+        sides: 5,
       },
       image: {
         src: "img/github.svg",
@@ -27,25 +28,25 @@ const particalConfig = {
     },
     opacity: {
       value: 0.5,
-      random: true,
-      anim: {
+      random: { enable: true, minimumValue: 0.1 },
+      animation: {
         enable: true,
         speed: 1,
-        opacity_min: 0,
+        minimumValue: 0,
         sync: false,
       },
     },
     size: {
-      value: 3,
-      random: true,
-      anim: {
+      value: { min: 1, max: 3 }, // Adjusted for `tsparticles` size range
+      random: { enable: true, minimumValue: 0.3 },
+      animation: {
         enable: true,
         speed: 5,
-        size_min: 0.3,
+        minimumValue: 0.3,
         sync: false,
       },
     },
-    line_linked: {
+    links: {
       enable: false,
       distance: 150,
       color: "#ffffff",
@@ -58,7 +59,9 @@ const particalConfig = {
       direction: "none",
       random: true,
       straight: false,
-      out_mode: "out",
+      outModes: {
+        default: "out",
+      },
       bounce: false,
       attract: {
         enable: false,
@@ -68,13 +71,13 @@ const particalConfig = {
     },
   },
   interactivity: {
-    detect_on: "canvas",
+    detectsOn: "canvas",
     events: {
-      onhover: {
+      onHover: {
         enable: false,
         mode: "bubble",
       },
-      onclick: {
+      onClick: {
         enable: false,
         mode: "repulse",
       },
@@ -83,7 +86,7 @@ const particalConfig = {
     modes: {
       grab: {
         distance: 400,
-        line_linked: {
+        links: {
           opacity: 1,
         },
       },
@@ -99,14 +102,14 @@ const particalConfig = {
         duration: 0.4,
       },
       push: {
-        particles_nb: 4,
+        quantity: 4,
       },
       remove: {
-        particles_nb: 2,
+        quantity: 2,
       },
     },
   },
-  retina_detect: true,
-}
+  detectRetina: true,
+};
 
 export default particalConfig;

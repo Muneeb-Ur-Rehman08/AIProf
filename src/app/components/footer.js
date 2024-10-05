@@ -2,63 +2,63 @@ import Logo from '../../assets/images/logo/logo.svg';
 import FooterBg from '../../assets/images/sections-bg-images/footer-bg-1.jpg';
 const Footer = () => {
   return (
-    <footer class="page-footer dark-color-footer" id="page-footer">
+    <footer className="page-footer dark-color-footer" id="page-footer">
       <div
-        class="overlay-photo-image-bg"
+        className="overlay-photo-image-bg"
         style={{ backgroundImage: `url(${FooterBg})`, opacity: 0.25 }}
       ></div>
-      <div class="container">
-        <div class="row footer-cols">
-          <div class="col-12 col-md-8 col-lg-4  footer-col">
+      <div className="container">
+        <div className="row footer-cols">
+          <div className="col-12 col-md-8 col-lg-4  footer-col">
             <img
-              class="img-fluid footer-logo"
+              className="img-fluid footer-logo"
               loading="lazy"
               src={Logo}
               alt="logo"
             />
-            <div class="footer-col-content-wrapper">
-              <p class="footer-text-about-us">
+            <div className="footer-col-content-wrapper">
+              <p className="footer-text-about-us">
                 AiProf Your Most Helpful Teacher Ever!
               </p>
             </div>
           </div>
-          <div class="col-6 col-lg-2  footer-col mt-2 text-center">
-            <div class="footer-col-content-wrapper">
-              <ul class="footer-menu ">
-                <li class="footer-menu-item">
-                  <i class="bi bi-arrow-right icon "></i>
+          <div className="col-6 col-lg-2  footer-col mt-2 text-center">
+            <div className="footer-col-content-wrapper">
+              <ul className="footer-menu ">
+                <li className="footer-menu-item">
+                  <i className="bi bi-arrow-right icon "></i>
                   <a
-                    class="footer-menu-link"
+                    className="footer-menu-link"
                     href="#page-hero"
                     alt="Starting page"
                   >
                     Home
                   </a>
                 </li>
-                <li class="footer-menu-item">
-                  <i class="bi bi-arrow-right icon "></i>
+                <li className="footer-menu-item">
+                  <i className="bi bi-arrow-right icon "></i>
                   <a
-                    class="footer-menu-link"
+                    className="footer-menu-link"
                     href="#about"
                     alt="about AI Prof Section"
                   >
                     About Us
                   </a>
                 </li>
-                <li class="footer-menu-item">
-                  <i class="bi bi-arrow-right icon "></i>
+                <li className="footer-menu-item">
+                  <i className="bi bi-arrow-right icon "></i>
                   <a
-                    class="footer-menu-link"
+                    className="footer-menu-link"
                     href="#services"
                     alt="services provided by AI Prof"
                   >
                     Services
                   </a>
                 </li>
-                <li class="footer-menu-item">
-                  <i class="bi bi-arrow-right icon "></i>
+                <li className="footer-menu-item">
+                  <i className="bi bi-arrow-right icon "></i>
                   <a
-                    class="footer-menu-link"
+                    className="footer-menu-link"
                     href="https://meetyourai.github.io/AIProf/blog/BlogIndex"
                     alt="AI Prof Blog page"
                     target="_blank"
@@ -69,43 +69,43 @@ const Footer = () => {
               </ul>
             </div>
           </div>
-          <div class="col-6 col-lg-2 footer-col mt-2 text-center">
-            <div class="footer-col-content-wrapper">
-              <ul class="footer-menu">
-                <li class="footer-menu-item">
-                  <i class="bi bi-arrow-right icon "></i>
+          <div className="col-6 col-lg-2 footer-col mt-2 text-center">
+            <div className="footer-col-content-wrapper">
+              <ul className="footer-menu">
+                <li className="footer-menu-item">
+                  <i className="bi bi-arrow-right icon "></i>
                   <a
-                    class="footer-menu-link"
+                    className="footer-menu-link"
                     href="#pricing"
                     alt="AI Prof pricing section"
                   >
                     Pricing
                   </a>
                 </li>
-                <li class="footer-menu-item">
-                  <i class="bi bi-arrow-right icon "></i>
+                <li className="footer-menu-item">
+                  <i className="bi bi-arrow-right icon "></i>
                   <a
-                    class="footer-menu-link"
+                    className="footer-menu-link"
                     href="#faq"
                     alt="section about frequently asked Questions"
                   >
                     Faqs
                   </a>
                 </li>
-                <li class="footer-menu-item">
-                  <i class="bi bi-arrow-right icon "></i>
+                <li className="footer-menu-item">
+                  <i className="bi bi-arrow-right icon "></i>
                   <a
-                    class="footer-menu-link"
+                    className="footer-menu-link"
                     href="#why"
                     alt="section why choose AI Prof"
                   >
                     How it works
                   </a>
                 </li>
-                <li class="footer-menu-item">
-                  <i class="bi bi-arrow-right icon "></i>
+                <li className="footer-menu-item">
+                  <i className="bi bi-arrow-right icon "></i>
                   <a
-                    class="footer-menu-link"
+                    className="footer-menu-link"
                     href="https://github.com/MeetYourAI/AIProf/tree/dev/assets"
                     alt="AI Prof brand assets"
                     target="_blank"
@@ -116,70 +116,70 @@ const Footer = () => {
               </ul>
             </div>
           </div>
-          <div class="col-12 col-lg-4 footer-col text-center">
-            <h2 class=" footer-col-title">contact information</h2>
-            <div class="footer-col-content-wrapper">
-              <div class="contact-info-card">
-                <i class="bi bi-envelope icon"></i>
+          <div className="col-12 col-lg-4 footer-col text-center">
+            <h2 className=" footer-col-title">contact information</h2>
+            <div className="footer-col-content-wrapper">
+              <div className="contact-info-card">
+                <i className="bi bi-envelope icon"></i>
                 <a
-                  class="text-lowercase  info"
+                  className="text-lowercase  info"
                   href="mailto:meetyouraihelper@gmail.com"
                 >
                   meetyouraihelper@gmail.com
                 </a>
               </div>
-              <div class="contact-info-card">
-                <i class="bi bi-geo-alt icon"></i>
-                <span class="info">AI2BC Organization</span>
+              <div className="contact-info-card">
+                <i className="bi bi-geo-alt icon"></i>
+                <span className="info">AI2BC Organization</span>
               </div>
-              <div class="contact-info-card">
-                <i class="bi bi-phone icon"></i>
-                <a class="info" href="tel:+20123456789">
+              <div className="contact-info-card">
+                <i className="bi bi-phone icon"></i>
+                <a className="info" href="tel:+20123456789">
                   +447762293742
                 </a>
               </div>
-              <div class="contact-info-card">
-                <div class="social-icons">
-                  <div class="sc-wrapper dir-row sc-size-32">
-                    <ul class="sc-list">
-                      <li class="sc-item " title="Facebook">
+              <div className="contact-info-card">
+                <div className="social-icons">
+                  <div className="sc-wrapper dir-row sc-size-32">
+                    <ul className="sc-list">
+                      <li className="sc-item " title="Facebook">
                         <a
-                          class="sc-link"
+                          className="sc-link"
                           href=" https://www.facebook.com/AIPROF2BC?mibextid=ZbWKwL"
                           title="social media icon"
                           target="_blank"
                         >
-                          <i class="fab fa-facebook-f sc-icon"></i>
+                          <i className="fab fa-facebook-f sc-icon"></i>
                         </a>
                       </li>
-                      <li class="sc-item " title="twitter">
+                      <li className="sc-item " title="twitter">
                         <a
-                          class="sc-link"
+                          className="sc-link"
                           href=" https://twitter.com/ai_profedu"
                           title="social media icon"
                           target="_blank"
                         >
-                          <i class="fab fa-twitter sc-icon"></i>
+                          <i className="fab fa-twitter sc-icon"></i>
                         </a>
                       </li>
-                      <li class="sc-item " title="Whatsapp">
+                      <li className="sc-item " title="Whatsapp">
                         <a
-                          class="sc-link"
+                          className="sc-link"
                           href=" https://wa.me/message/JNKBLQKB7HBCP1"
                           title="Social Media icon"
                           target="_blank"
                         >
-                          <i class="fab fa-whatsapp sc-icon"></i>
+                          <i className="fab fa-whatsapp sc-icon"></i>
                         </a>
                       </li>
-                      <li class="sc-item " title="youtube">
+                      <li className="sc-item " title="youtube">
                         <a
-                          class="sc-link"
+                          className="sc-link"
                           href="https://www.youtube.com/channel/UC0eO8rFeVcQMY_RDUjzu1Gw/featured"
                           title="youtube channel"
                           target="_blank"
                         >
-                          <i class="fab fa-youtube sc-icon"></i>
+                          <i className="fab fa-youtube sc-icon"></i>
                         </a>
                       </li>
                     </ul>
@@ -190,19 +190,19 @@ const Footer = () => {
           </div>
         </div>
       </div>
-      <div class="copyrights ">
-        <div class="container">
-          <div class="row">
-            <div class="col-12 col-md-6 d-flex justify-content-start mb-3">
-              <p class="credits">
+      <div className="copyrights ">
+        <div className="container">
+          <div className="row">
+            <div className="col-12 col-md-6 d-flex justify-content-start mb-3">
+              <p className="credits">
                 &copy; 2023 This Project is
-                <a class="LICENSE-link" href="LICENSE.html">
+                <a className="LICENSE-link" href="LICENSE.html">
                   MIT Licensed{" "}
                 </a>
               </p>
             </div>
-            <div class="col-12 col-md-6 d-flex justify-content-end">
-              <div class="terms-links">
+            <div className="col-12 col-md-6 d-flex justify-content-end">
+              <div className="terms-links">
                 <a href="rules.html">Terms of Use </a>|{" "}
                 <a href="privacy-policy.html">Privacy Policy</a>
               </div>
