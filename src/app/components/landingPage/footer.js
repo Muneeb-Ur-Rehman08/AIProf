@@ -1,5 +1,5 @@
-import Logo from '../../assets/images/logo/logo.svg';
-import FooterBg from '../../assets/images/sections-bg-images/footer-bg-1.jpg';
+import Logo from '../../../assets/images/logo/logo.svg';
+import FooterBg from '../../../assets/images/sections-bg-images/footer-bg-1.jpg';
 const Footer = () => {
   return (
     <footer className="page-footer dark-color-footer" id="page-footer">

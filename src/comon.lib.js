@@ -108,3 +108,24 @@ export const customParticlesOptions = {
     },
     retina_detect: true,
   };
+
+
+  export const getUser = () => {
+    return JSON.parse(localStorage.getItem('sb-vzzoeejjqkzixagyqcsy-auth-token'));
+  }
+
+  export const setUser = (user) => {
+    localStorage.setItem('sb-vzzoeejjqkzixagyqcsy-auth-token', JSON.stringify(user));
+  }
+
+  export const removeUser = () => {
+    localStorage.removeItem('sb-vzzoeejjqkzixagyqcsy-auth-token');
+  }
+
+  export const uuid_generate_v4 = () => {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      const r = crypto.getRandomValues(new Uint8Array(1))[0] % 16;
+      const v = c === 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
+  };

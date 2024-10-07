@@ -1,7 +1,7 @@
-import testimonial1 from '../../assets/images/testimonials/Testimonial 1.png';
-import testimonial2 from '../../assets/images/testimonials/Testimonial2new.png';
-import testimonial3 from '../../assets/images/testimonials/Testimonial 3.png';
-import bgImage from '../../assets/images/sections-bg-images/1.jpg';
+import testimonial1 from '../../../assets/images/testimonials/Testimonial 1.png';
+import testimonial2 from '../../../assets/images/testimonials/Testimonial2new.png';
+import testimonial3 from '../../../assets/images/testimonials/Testimonial 3.png';
+import bgImage from '../../../assets/images/sections-bg-images/1.jpg';
 import { useEffect } from 'react';
 import 'swiper/swiper-bundle.css';
 import { Autoplay, Navigation } from 'swiper/modules';

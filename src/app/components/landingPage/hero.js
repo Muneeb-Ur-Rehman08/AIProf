@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import Particles from '@tsparticles/react';
-import mic from '../../assets/images/mic/mic.svg';
-import particalConfig from '../particals/partical.config';
-import muteMic from '../../assets/images/mic/muteMic.svg';
-import classNameroomScenario from '../../assets/images/sections-bg-images/classroomScenario.jpg';
-import TD_Animation_Style_Einstein_front from '../../assets/images/hero/3D_Animation_Style_Einstein_front.png';
+import mic from '../../../assets/images/mic/mic.svg';
+import particalConfig from '../../particals/partical.config';
+import muteMic from '../../../assets/images/mic/muteMic.svg';
+import classNameroomScenario from '../../../assets/images/sections-bg-images/classroomScenario.jpg';
+import TD_Animation_Style_Einstein_front from '../../../assets/images/hero/3D_Animation_Style_Einstein_front.png';
 
 const particlesLoaded = (container) => {
   console.log(container);

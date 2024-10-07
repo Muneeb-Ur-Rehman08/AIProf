@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import Header from '../components/header';
-import Hero from '../components/hero';
-import Sponsers from '../components/sponsers';
-import Services from '../components/services';
-import About from '../components/about';
-import Pricing from '../components/pricing';
-import Testimonial from '../components/testimonial';
-import Faqs from '../components/faqs';
-import Contact from '../components/contact';
-import Footer from '../components/footer';
+import Header from '../components/landingPage/header';
+import Hero from '../components/landingPage/hero';
+import Sponsers from '../components/landingPage/sponsers';
+import Services from '../components/landingPage/services';
+import About from '../components/landingPage/about';
+import Pricing from '../components/landingPage/pricing';
+import Testimonial from '../components/landingPage/testimonial';
+import Faqs from '../components/landingPage/faqs';
+import Contact from '../components/landingPage/contact';
+import Footer from '../components/landingPage/footer';
 
 const MainPage = () => {
   const [startCounter, setStartCounter] = useState(false);

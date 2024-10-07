@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import FaqImage from '../../assets/images/faq/faqpromptnew.png';
+import FaqImage from '../../../assets/images/faq/faqpromptnew.png';
 
 const Faqs = () => {
   const [openIndex, setOpenIndex] = useState(null);

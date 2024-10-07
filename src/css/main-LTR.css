@@ -4729,4 +4729,10 @@ body.dark-theme .about .stats-counter.stats-cards .stat-box {
   background: var(--clr-semi-dark-blue);
 }
 
+.listing-history .btn span {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
 /*    End dark theme rules  *//*# sourceMappingURL=main-LTR.css.map */

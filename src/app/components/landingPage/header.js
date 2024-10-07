@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import headerLogo from '../../assets/images/logo/logo.svg';
+import headerLogo from '../../../assets/images/logo/logo.svg';
 
 const Header = () => {
   const [isSticky, setIsSticky] = useState(false);

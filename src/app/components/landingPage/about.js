@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import CountUp from "react-countup";
-import aboutImage from "../../assets/images/about/Whystudentchoose.png";
-import AboutUs from "../../assets/images/about/Aboutus.png";
+import aboutImage from "../../../assets/images/about/Whystudentchoose.png";
+import AboutUs from "../../../assets/images/about/Aboutus.png";
 
 const About = ({ activeSection, startCounter, setStartCounter }) => {
 
