@@ -13,14 +13,19 @@ const Header = () => {
     const sections = document.querySelectorAll("section"); // Adjust this selector based on your layout
     let current = "";
 
-    sections.forEach(section => {
-      const sectionTop = section.offsetTop - 50; // Adjust for header height
-      const sectionHeight = section.offsetHeight;
+    // Check if at the top of the page
+    if (window.scrollY == 0) {
+        current =  'page-hero'; // Set active link to home
+    } else {
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop - 50; // Adjust for header height
+            const sectionHeight = section.offsetHeight;
 
-      if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
-        current = section.getAttribute("id");
-      }
-    });
+            if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
+                current = section.getAttribute("id");
+            }
+        });
+    }
 
     setActiveLink(current);
   };

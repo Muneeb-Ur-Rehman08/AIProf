@@ -71,13 +71,12 @@ const Faqs = () => {
                     </h5>
                   </div>
                   <div
-                    className={`collapse t ${openIndex === index ? 'show' : ''}`}
+                    className={`collapse ${openIndex === index ? 'show' : ''}`}
                     id={`collapse-${index + 1}`}
                     aria-labelledby={`heading-${index + 1}`}
                     data-bs-parent="#accordion"
                   >
-                   
-                    <div className="card-body ">
+                    <div className="card-body">
                       <p className="faq-answer">{faq.answer}</p>
                     </div>
                   </div>
