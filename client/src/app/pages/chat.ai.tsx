@@ -83,6 +83,7 @@ export default function MultilingualVoiceChat() {
   const recognitionRef = useRef<any>(null);
   const synthRef = useRef<SpeechSynthesis | null>(null);
   const [selectedConversation, setSelectedConversation] = useState<any>(null);
+  const [history, setHistory] = useState([]);
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -205,26 +206,21 @@ export default function MultilingualVoiceChat() {
     let messageToSpeak = "";
     if (inputValue.trim() || attachments.length > 0) {
       setIsSending(true);
-      // setSelectedConversation((prevMessages) => [
-      //   ...prevMessages,
-      //   { id: uniqueId, conversation_id: selectedConversation?.id || uuid_generate_v4(), prompt: inputValue, content: "", type: "text" },
-      // ]);
-
-      setSelectedConversation((prevMessages) => {
+      setSelectedConversation((prevMessages: any) => {
         return {
           ...prevMessages,
           messages: [
-            ...prevMessages.messages,
-            { id: uniqueId, conversation_id: selectedConversation?.id || uuid_generate_v4(), prompt: inputValue, content: "", type: "text" },
+            ...prevMessages?.messages || [],
+            { id: uniqueId, conversation_id: selectedConversation?.conversation_id || uuid_generate_v4(), prompt: inputValue, content: "", type: "text" },
           ]
         }
       });
       try {
-        await getAIResponse(token?.user?.id, selectedConversation?.id || uuid_generate_v4(), inputValue, (chunk) => {
-          setSelectedConversation((prevMessages) => {
-            const updatedMessages = [...prevMessages.messages];
+        await getAIResponse(token?.user?.id, selectedConversation?.conversation_id || uuid_generate_v4(), inputValue, (chunk) => {
+          setSelectedConversation((prevMessages: any) => {
+            const updatedMessages = [...prevMessages?.messages || []];
             const messageToUpdate = updatedMessages.find(
-              (message) => message.id == uniqueId
+              (message) => message?.id == uniqueId
             );
             if (messageToUpdate) {
               messageToUpdate.content += chunk;
@@ -235,6 +231,33 @@ export default function MultilingualVoiceChat() {
               messages: updatedMessages
             };
           });
+        });
+        setHistory((prevHistory: any) => {
+          const conversationExists = prevHistory.some((conversation: any) => conversation.conversation_id === selectedConversation?.conversation_id);
+          if (conversationExists) {
+            return prevHistory.map((conversation: any) => {
+              if (conversation.conversation_id === selectedConversation?.conversation_id) {
+                return {
+                  ...conversation,
+                  messages: [
+                    ...conversation.messages,
+                    { id: uniqueId, conversation_id: selectedConversation?.conversation_id || uuid_generate_v4(), prompt: inputValue, content: messageToSpeak, type: "text" }
+                  ]
+                };
+              }
+              return conversation;
+            });
+          } else {
+            return [
+              ...prevHistory,
+              {
+                conversation_id: selectedConversation?.conversation_id || uuid_generate_v4(),
+                messages: [
+                  { id: uniqueId, conversation_id: selectedConversation?.conversation_id || uuid_generate_v4(), prompt: inputValue, content: messageToSpeak, type: "text" }
+                ]
+              }
+            ];
+          }
         });
       } catch (error) {
         console.error("Failed to get AI response:", error);
@@ -355,12 +378,13 @@ export default function MultilingualVoiceChat() {
             <button
               className="btn text-white text-start mb-3"
               style={{ display: "flex", alignItems: "center", gap: "10px" }}
+              onClick={() => setSelectedConversation(null)}
             >
               <MessageSquare /> Ask me anything
             </button>
           </div>
 
-          <ListingHistory setSelectedConversation={setSelectedConversation} />
+          <ListingHistory setSelectedConversation={setSelectedConversation} history={history} setHistory={setHistory} />
 
           <div className="mt-auto mb-2">
              <button
@@ -399,7 +423,7 @@ export default function MultilingualVoiceChat() {
             style={{ backgroundColor: "rgba(255, 255, 255, 0.1)" }}
           >
             {selectedConversation?.messages?.length > 0 ? (
-              selectedConversation?.messages.map((message) => (
+              selectedConversation?.messages.map((message: any) => (
                 <React.Fragment key={message.id}>
                   <div className="d-flex justify-content-end mb-3">
                     <div

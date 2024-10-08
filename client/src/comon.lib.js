@@ -1,4 +1,5 @@
 import axios from "axios";
+import nlp from "compromise/three";
 
 export const customParticlesOptions = {
     particles: {
@@ -133,3 +134,26 @@ export const customParticlesOptions = {
       return v.toString(16);
     });
   };
+
+export function generateTitleUsingCompromise(question) {
+  // Use NLP to parse the sentence and identify nouns and key phrases
+  let doc = nlp(question);
+  
+  // Step 1: Get the key nouns and terms
+  const nouns = doc.nouns().out('array'); // Extract only the nouns
+  const topics = doc.topics().out('array'); // Extract main topics if available
+  
+  // Step 2: Merge results to get the main words (you can tweak this step as needed)
+  const keywords = [...new Set([...nouns, ...topics])];
+
+  // Step 3: Capitalize each keyword and join them as a title
+  const title = keywords.map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+
+  return removeSpecialCharacters(title || question);
+}
+
+
+export const removeSpecialCharacters = (text) => {
+  return text?.replace(/[^a-zA-Z0-9 ]/g, '');
+}
+

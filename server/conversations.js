@@ -42,7 +42,8 @@ export const getConversationsByUser = async (userId) => {
     const { data, error } = await supabase
       .from('conversations')
       .select('*')
-      .eq('user_id', userId);
+      .eq('user_id', userId)
+      .order('created_at', { ascending: true });
 
     const re_aranged_data = re_arange_by_conversation_id(data);
 
