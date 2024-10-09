@@ -148,7 +148,6 @@ export function generateTitleUsingCompromise(question) {
 
   // Step 3: Capitalize each keyword and join them as a title
   const title = keywords.map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
-
   return removeSpecialCharacters(title || question);
 }
 

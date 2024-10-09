@@ -1,9 +1,16 @@
 import "./css/main-LTR.css";
 import "./css/home.css";
 import "./css/vendors/flaticon/flaticon.css";
-import "@fortawesome/fontawesome-free/css/all.min.css";
-import "bootstrap-icons/font/bootstrap-icons.css";
+import "./css/vendors/bootstrap-icons-1.9.1/fonts/bootstrap-icons.woff";
+import "./css/vendors/bootstrap-icons-1.9.1/fonts/bootstrap-icons.woff2";
+import "./css/vendors/bootstrap.min.css";
+import "./css/vendors/bootstrap-icons-1.9.1/bootstrap-icons.json";
 import "./css/vendors/animate.css";
+import "./css/vendors/bootstrap.min.css";
+import "./css/vendors/swiper-bundle.min.css";
+import "./css/vendors/jquery.fancybox.min.css";
+import "./css/vendors/all.min.css";
+import "./css/vendors/bootstrap-icons-1.9.1/bootstrap-icons.css";
 import { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { initParticlesEngine } from "@tsparticles/react";

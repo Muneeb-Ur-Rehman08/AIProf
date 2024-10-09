@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import axios from 'axios';
 import { getUser, generateTitleUsingCompromise } from '../../../comon.lib';
 const ListingHistory = ({setSelectedConversation, history, setHistory}) => {
@@ -36,7 +36,7 @@ const ListingHistory = ({setSelectedConversation, history, setHistory}) => {
                   setSelectedConversation(item);
                 }}
             >
-              <span>{generateTitleUsingCompromise(item.title)}</span>
+              <span>{generateTitleUsingCompromise(item?.title)}</span>
             </button>
             </>
             ))}

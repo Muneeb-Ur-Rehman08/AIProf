@@ -36,7 +36,7 @@ const Header = () => {
   }, []);
 
   return (
-    <header className={`header-basic ${isSticky ? 'is-sticky' : ''}`} id="page-header">
+    <header className={`header-basic ${isSticky ? 'is-sticky' : ''} `} id="page-header">
       <div className="container">
         <nav className="menu-navbar" id="main-nav">
           <div className="header-logo">
@@ -46,7 +46,7 @@ const Header = () => {
           </div>
           <div className="links menu-wrapper">
             <ul className="list-js links-list">
-              <li className="nav-item menu-item">
+              <li className="nav-item menu-item has-sub-menu">
                 <a className={`nav-link menu-link ${activeLink === 'page-hero' ? 'active' : ''}`} href="#page-hero">home</a>
               </li>
               <li className="nav-item menu-item">

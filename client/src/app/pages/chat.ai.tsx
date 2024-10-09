@@ -76,7 +76,8 @@ export default function MultilingualVoiceChat() {
   const [showMicPermissionDialog, setShowMicPermissionDialog] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState("en-US");
   const [showLoginModal, setShowLoginModal] = useState(false);
-  const [showSidebar, setShowSidebar] = useState(true);
+  
+  const [showSidebar, setShowSidebar] = useState(window.innerWidth <= 768);
   const [token, setToken] = useState(getUser());
   const fileInputRef = useRef<HTMLInputElement>(null);
   const chatEndRef = useRef<HTMLDivElement>(null);
@@ -349,8 +350,8 @@ export default function MultilingualVoiceChat() {
           } d-md-flex`}
           style={{
             backgroundColor: "#2c2c2e",
-            width: "25%",
-            maxWidth: "20%",
+            // width: "25%",
+            maxWidth: "25%",
             maxHeight: "100vh",
           }}
         >
@@ -377,7 +378,7 @@ export default function MultilingualVoiceChat() {
           <div className="mb-4">
             <button
               className="btn text-white text-start mb-3"
-              style={{ display: "flex", alignItems: "center", gap: "10px" }}
+              style={{ display: "flex", alignItems: "center", gap: "10px", textWrap: "nowrap" }}
               onClick={() => setSelectedConversation(null)}
             >
               <MessageSquare /> Ask me anything
@@ -420,7 +421,7 @@ export default function MultilingualVoiceChat() {
           {/* Chat messages */}
           <div
             className="flex-grow-1 p-3 overflow-auto"
-            style={{ backgroundColor: "rgba(255, 255, 255, 0.1)" }}
+            style={{ backgroundColor: "rgba(255, 255, 255, 0.1) ", width: "100%" }}
           >
             {selectedConversation?.messages?.length > 0 ? (
               selectedConversation?.messages.map((message: any) => (
