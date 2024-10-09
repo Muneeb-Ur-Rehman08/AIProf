@@ -1,5 +1,5 @@
 const particalConfig = {
-  fullScreen: { enable: true }, // Optional to enable full-screen mode
+  fullScreen: { enable: false }, // Optional to enable full-screen mode
   particles: {
     number: {
       value: 150,
