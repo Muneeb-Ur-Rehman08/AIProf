@@ -4,10 +4,10 @@ import nlp from "compromise/three";
 export const customParticlesOptions = {
     particles: {
       number: {
-        value: 150,
+        // value: 150,
         density: {
           enable: true,
-          value_area: 500,
+          value_area: 800,
         },
       },
       color: {
