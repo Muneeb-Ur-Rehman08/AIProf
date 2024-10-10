@@ -8,8 +8,6 @@ import {
   LogOut,
   Paperclip,
   Loader,
-  StopCircle,
-  PlayCircle,
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
@@ -18,6 +16,9 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import LoginFormPopup from "../components/auth/login";
 import { getUser, sginout, uuid_generate_v4 } from "../../comon.lib";
 import ListingHistory from "../components/chat/listing_history";
+import { EnhancedLoginWithSignup } from "../components/auth/enhanced-login-with-signup";
+import ListingConversation from "../components/chat/listing_conversation";
+import { useUserConversation } from "../context/UserConversationContext";
 
 const getAIResponse = async (
   userId: string,
@@ -26,20 +27,23 @@ const getAIResponse = async (
   onData: (chunk: string) => void
 ): Promise<void> => {
   try {
-    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/chat`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
-      credentials: "include",
-      body: JSON.stringify({
-        prompt: message,
-        model: "mixtral-8x7b-32768",
-        user_id: userId,
-        conversation_id: conversationId,
-      }),
-    });
+    const response = await fetch(
+      `${process.env.REACT_APP_BACKEND_URL}/api/chat`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          prompt: message,
+          model: "mixtral-8x7b-32768",
+          user_id: userId,
+          conversation_id: conversationId,
+        }),
+      }
+    );
 
     if (!response.body) {
       throw new Error("ReadableStream not supported");
@@ -76,7 +80,7 @@ export default function MultilingualVoiceChat() {
   const [showMicPermissionDialog, setShowMicPermissionDialog] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState("en-US");
   const [showLoginModal, setShowLoginModal] = useState(false);
-  
+
   const [showSidebar, setShowSidebar] = useState(window.innerWidth <= 768);
   const [token, setToken] = useState(getUser());
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -84,8 +88,7 @@ export default function MultilingualVoiceChat() {
   const recognitionRef = useRef<any>(null);
   const synthRef = useRef<SpeechSynthesis | null>(null);
   const [selectedConversation, setSelectedConversation] = useState<any>(null);
-  const [history, setHistory] = useState([]);
-
+  const { conversations, setConversations } = useUserConversation();
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [selectedConversation?.messages]);
@@ -211,54 +214,92 @@ export default function MultilingualVoiceChat() {
         return {
           ...prevMessages,
           messages: [
-            ...prevMessages?.messages || [],
-            { id: uniqueId, conversation_id: selectedConversation?.conversation_id || uuid_generate_v4(), prompt: inputValue, content: "", type: "text" },
-          ]
-        }
+            ...(prevMessages?.messages || []),
+            {
+              id: uniqueId,
+              conversation_id:
+                selectedConversation?.conversation_id || uuid_generate_v4(),
+              prompt: inputValue,
+              content: "",
+              type: "text",
+            },
+          ],
+        };
       });
       try {
-        await getAIResponse(token?.user?.id, selectedConversation?.conversation_id || uuid_generate_v4(), inputValue, (chunk) => {
-          setSelectedConversation((prevMessages: any) => {
-            const updatedMessages = [...prevMessages?.messages || []];
-            const messageToUpdate = updatedMessages.find(
-              (message) => message?.id == uniqueId
-            );
-            if (messageToUpdate) {
-              messageToUpdate.content += chunk;
-              messageToSpeak += chunk;
-            }
-            return {
-              ...prevMessages,
-              messages: updatedMessages
-            };
-          });
-        });
-        setHistory((prevHistory: any) => {
-          const conversationExists = prevHistory.some((conversation: any) => conversation.conversation_id === selectedConversation?.conversation_id);
+        await getAIResponse(
+          token?.user?.id,
+          selectedConversation?.conversation_id || uuid_generate_v4(),
+          inputValue,
+          (chunk) => {
+            setSelectedConversation((prevMessages: any) => {
+              const updatedMessages = [...(prevMessages?.messages || [])];
+              const messageToUpdate = updatedMessages.find(
+                (message) => message?.id == uniqueId
+              );
+              if (messageToUpdate) {
+                messageToUpdate.content += chunk;
+                messageToSpeak += chunk;
+              }
+              return {
+                ...prevMessages,
+                messages: updatedMessages,
+              };
+            });
+          }
+        );
+        setConversations((prevHistory: any) => {
+          if (Array.isArray(prevHistory) && prevHistory?.length > 0) {
+          const conversationExists = prevHistory.some(
+            (conversation: any) =>
+              conversation.conversation_id ===
+              selectedConversation?.conversation_id
+          );
           if (conversationExists) {
             return prevHistory.map((conversation: any) => {
-              if (conversation.conversation_id === selectedConversation?.conversation_id) {
+              if (
+                conversation.conversation_id ===
+                selectedConversation?.conversation_id
+              ) {
                 return {
                   ...conversation,
                   messages: [
                     ...conversation.messages,
-                    { id: uniqueId, conversation_id: selectedConversation?.conversation_id || uuid_generate_v4(), prompt: inputValue, content: messageToSpeak, type: "text" }
-                  ]
+                    {
+                      id: uniqueId,
+                      conversation_id:
+                        selectedConversation?.conversation_id ||
+                        uuid_generate_v4(),
+                      prompt: inputValue,
+                      content: messageToSpeak,
+                      type: "text",
+                    },
+                  ],
                 };
               }
-              return conversation;
-            });
-          } else {
-            return [
+                return conversation;
+              });
+            } else {
+              return [
               ...prevHistory,
               {
-                conversation_id: selectedConversation?.conversation_id || uuid_generate_v4(),
+                conversation_id:
+                  selectedConversation?.conversation_id || uuid_generate_v4(),
                 messages: [
-                  { id: uniqueId, conversation_id: selectedConversation?.conversation_id || uuid_generate_v4(), prompt: inputValue, content: messageToSpeak, type: "text" }
-                ]
-              }
+                  {
+                    id: uniqueId,
+                    conversation_id:
+                      selectedConversation?.conversation_id ||
+                      uuid_generate_v4(),
+                    prompt: inputValue,
+                    content: messageToSpeak,
+                    type: "text",
+                  },
+                ],
+              },
             ];
           }
+        }
         });
       } catch (error) {
         console.error("Failed to get AI response:", error);
@@ -330,7 +371,7 @@ export default function MultilingualVoiceChat() {
   return (
     <>
       {showLoginModal && (
-        <LoginFormPopup
+        <EnhancedLoginWithSignup
           show={showLoginModal}
           handleClose={() => setShowLoginModal(false)}
           setToken={setToken}
@@ -351,7 +392,7 @@ export default function MultilingualVoiceChat() {
           style={{
             backgroundColor: "#2c2c2e",
             // width: "25%",
-            maxWidth: "25%",
+            maxWidth: "30%",
             maxHeight: "100vh",
           }}
         >
@@ -378,21 +419,31 @@ export default function MultilingualVoiceChat() {
           <div className="mb-4">
             <button
               className="btn text-white text-start mb-3"
-              style={{ display: "flex", alignItems: "center", gap: "10px", textWrap: "nowrap" }}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "10px",
+                textWrap: "nowrap",
+              }}
               onClick={() => setSelectedConversation(null)}
             >
               <MessageSquare /> Ask me anything
             </button>
           </div>
 
-          <ListingHistory setSelectedConversation={setSelectedConversation} history={history} setHistory={setHistory} />
+          <ListingHistory setSelectedConversation={setSelectedConversation} />
 
           <div className="mt-auto mb-2">
-             <button
-              className="btn btn-outline-light w-100"
+            <button
+              className="btn btn-outline-light w-100 d-flex flex-row justify-content-center align-items-center gap-2"
               onClick={() => setShowLoginModal(true)}
             >
-              <User size={18} />  {(token?.user?.id && token?.user?.user_metadata) ? token?.user?.user_metadata?.full_name || token?.user?.user_metadata?.email || 'Muneeb' : 'Login'}
+              <User size={18} />{" "}
+              {token?.user?.id && token?.user?.user_metadata
+                ? token?.user?.user_metadata?.full_name ||
+                  token?.user?.user_metadata?.email ||
+                  "Muneeb"
+                : "Login"}
             </button>
           </div>
         </div>
@@ -400,14 +451,13 @@ export default function MultilingualVoiceChat() {
         {/* Main chat area */}
         <div className="flex-grow-1 d-flex flex-column">
           {/* Sign Out Button */}
-          {token?.user?.id && <div className="d-flex justify-content-end p-2">
-            <button
-              className="btn btn-outline-light"
-              onClick={handleSignOut}
-            >
-              <LogOut size={18} /> Sign Out -
-            </button>
-          </div>}
+          {token?.user?.id && (
+            <div className="d-flex justify-content-end p-2">
+              <button className="btn btn-outline-light" onClick={handleSignOut}>
+                <LogOut size={18} /> Sign Out -
+              </button>
+            </div>
+          )}
 
           {/* Toggle sidebar button (visible on small screens) */}
           <button
@@ -419,71 +469,14 @@ export default function MultilingualVoiceChat() {
           </button>
 
           {/* Chat messages */}
-          <div
-            className="flex-grow-1 p-3 overflow-auto"
-            style={{ backgroundColor: "rgba(255, 255, 255, 0.1) ", width: "100%" }}
-          >
-            {selectedConversation?.messages?.length > 0 ? (
-              selectedConversation?.messages.map((message: any) => (
-                <React.Fragment key={message.id}>
-                  <div className="d-flex justify-content-end mb-3">
-                    <div
-                      className="p-3 rounded-lg bg-primary text-white"
-                      style={{ maxWidth: "70%" }}
-                    >
-                      {message.prompt}
-                    </div>
-                  </div>
-                  <div className="d-flex justify-content-start mb-3">
-                    <div
-                      className="p-3 rounded-lg bg-light text-dark"
-                      style={{ maxWidth: "70%" }}
-                    >
-                      <div
-                        dangerouslySetInnerHTML={{ __html: message.content }}
-                      />
-                      <div className="d-flex justify-content-end mt-2">
-                        {isSpeaking ? (
-                          <button
-                            className="btn btn-link text-dark"
-                            onClick={stopSpeaking}
-                          >
-                            <StopCircle size={18} />
-                          </button>
-                        ) : (
-                          <button
-                            className="btn btn-link text-dark"
-                            onClick={() => speakMessage(message.content)}
-                          >
-                            <PlayCircle size={18} />
-                          </button>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </React.Fragment>
-              ))
-            ) : (
-              <div
-                className="d-flex flex-column justify-content-center align-items-center"
-                style={{ height: "100%", textAlign: "center" }}
-              >
-                <div
-                  className="text-light mb-3"
-                  style={{ fontSize: "1.5rem", fontWeight: "bold" }}
-                >
-                  Hello, {token?.user?.user_metadata?.full_name || token?.user?.user_metadata?.email || 'Muneeb'}
-                </div>
-                <div
-                  className="text-light mb-3"
-                  style={{ fontSize: "1.2rem", fontStyle: "italic" }}
-                >
-                  How can I help you today?
-                </div>
-              </div>
-            )}
-            <div ref={chatEndRef} />
-          </div>
+          <ListingConversation
+            selectedConversation={selectedConversation}
+            token={token}
+            isSpeaking={isSpeaking}
+            stopSpeaking={stopSpeaking}
+            speakMessage={speakMessage}
+            chatEndRef={chatEndRef}
+          />
 
           {/* Input area */}
           <div

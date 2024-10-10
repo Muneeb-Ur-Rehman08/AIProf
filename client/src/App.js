@@ -11,6 +11,7 @@ import "./css/vendors/swiper-bundle.min.css";
 import "./css/vendors/jquery.fancybox.min.css";
 import "./css/vendors/all.min.css";
 import "./css/vendors/bootstrap-icons-1.9.1/bootstrap-icons.css";
+import "./index.css";
 import { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { initParticlesEngine } from "@tsparticles/react";
@@ -19,6 +20,7 @@ import { WOW } from "wowjs";
 import MainPage from "./app/pages/main";
 import MultilingualVoiceChat from "./app/pages/chat.ai.tsx";
 import { createClient } from "@supabase/supabase-js";
+import { UserConversationProvider } from './app/context/UserConversationContext';
 
 const themeStoredKey = "ThemeColor";
 const darkThemeClass = "dark-theme";
@@ -73,10 +75,12 @@ function App() {
 
   return (
     <Router>
+      <UserConversationProvider>
       <Routes>
         <Route path="/" element={<MainPage />} />
-        <Route path="/chat" element={<MultilingualVoiceChat />} />
-      </Routes>
+          <Route path="/chat" element={<MultilingualVoiceChat />} />
+        </Routes>
+      </UserConversationProvider>
     </Router>
   );
 }
