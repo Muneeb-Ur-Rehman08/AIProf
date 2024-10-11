@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+// import "../../../index.css"
 import { motion } from 'framer-motion'
 import { Button } from "../../components/auth/ui/button"
 import { Input } from "../../components/auth/ui/input"

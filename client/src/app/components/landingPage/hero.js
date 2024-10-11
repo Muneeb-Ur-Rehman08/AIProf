@@ -6,10 +6,6 @@ import muteMic from '../../../assets/images/mic/muteMic.svg';
 import classNameroomScenario from '../../../assets/images/sections-bg-images/classroomScenario.jpg';
 import TD_Animation_Style_Einstein_front from '../../../assets/images/hero/3D_Animation_Style_Einstein_front.png';
 
-const particlesLoaded = (container) => {
-  console.log(container);
-};
-
 const Hero = () => {
   const [teacherName, setTeacherName] = useState('');
   const [inputVisible, setInputVisible] = useState(false);
