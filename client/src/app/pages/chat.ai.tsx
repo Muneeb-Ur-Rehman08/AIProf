@@ -11,9 +11,6 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap/dist/js/bootstrap.bundle.min.js";
-import LoginFormPopup from "../components/auth/login";
 import { getUser, sginout, uuid_generate_v4 } from "../../comon.lib";
 import ListingHistory from "../components/chat/listing_history";
 import { EnhancedLoginWithSignup } from "../components/auth/enhanced-login-with-signup";
