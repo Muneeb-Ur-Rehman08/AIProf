@@ -4735,4 +4735,9 @@ body.dark-theme .about .stats-counter.stats-cards .stat-box {
   white-space: nowrap;
 }
 
+.color-inherit {
+  color: inherit !important;
+  text-decoration: none !important;
+}
+
 /*    End dark theme rules  *//*# sourceMappingURL=main-LTR.css.map */

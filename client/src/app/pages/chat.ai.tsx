@@ -25,7 +25,7 @@ const getAIResponse = async (
 ): Promise<void> => {
   try {
     const response = await fetch(
-      `${process.env.REACT_APP_BACKEND_URL}/api/chat`,
+      `${process.env.REACT_APP_BACKEND_URL}/chat_ai`,
       {
         method: "POST",
         headers: {
@@ -204,18 +204,20 @@ export default function MultilingualVoiceChat() {
 
   const handleSend = useCallback(async () => {
     let uniqueId = uuid_generate_v4();
+    let conversationId = selectedConversation?.conversation_id || uuid_generate_v4();
     let messageToSpeak = "";
     if (inputValue.trim() || attachments.length > 0) {
       setIsSending(true);
       setSelectedConversation((prevMessages: any) => {
         return {
           ...prevMessages,
+          conversation_id: conversationId,
+          title: inputValue,
           messages: [
             ...(prevMessages?.messages || []),
             {
               id: uniqueId,
-              conversation_id:
-                selectedConversation?.conversation_id || uuid_generate_v4(),
+              conversation_id: conversationId,
               prompt: inputValue,
               content: "",
               type: "text",
@@ -226,7 +228,7 @@ export default function MultilingualVoiceChat() {
       try {
         await getAIResponse(
           token?.user?.id,
-          selectedConversation?.conversation_id || uuid_generate_v4(),
+          conversationId,
           inputValue,
           (chunk) => {
             setSelectedConversation((prevMessages: any) => {
@@ -249,14 +251,12 @@ export default function MultilingualVoiceChat() {
           if (Array.isArray(prevHistory) && prevHistory?.length > 0) {
           const conversationExists = prevHistory.some(
             (conversation: any) =>
-              conversation.conversation_id ===
-              selectedConversation?.conversation_id
+              conversation.conversation_id === conversationId
           );
           if (conversationExists) {
             return prevHistory.map((conversation: any) => {
               if (
-                conversation.conversation_id ===
-                selectedConversation?.conversation_id
+                conversation.conversation_id === conversationId
               ) {
                 return {
                   ...conversation,
@@ -264,9 +264,7 @@ export default function MultilingualVoiceChat() {
                     ...conversation.messages,
                     {
                       id: uniqueId,
-                      conversation_id:
-                        selectedConversation?.conversation_id ||
-                        uuid_generate_v4(),
+                      conversation_id: conversationId,
                       prompt: inputValue,
                       content: messageToSpeak,
                       type: "text",
@@ -280,14 +278,11 @@ export default function MultilingualVoiceChat() {
               return [
               ...prevHistory,
               {
-                conversation_id:
-                  selectedConversation?.conversation_id || uuid_generate_v4(),
+                conversation_id: conversationId,
                 messages: [
                   {
                     id: uniqueId,
-                    conversation_id:
-                      selectedConversation?.conversation_id ||
-                      uuid_generate_v4(),
+                    conversation_id: conversationId,
                     prompt: inputValue,
                     content: messageToSpeak,
                     type: "text",
@@ -306,6 +301,7 @@ export default function MultilingualVoiceChat() {
       }
       speakMessage(messageToSpeak);
     }
+    setInputValue("");
   }, [inputValue, attachments, selectedConversation, speakMessage]);
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {

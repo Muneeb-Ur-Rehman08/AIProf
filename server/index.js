@@ -53,7 +53,14 @@ app.use(
 
 app.set("view engine", "ejs");
 
-app.post("/api/chat", handleChat);
+app.post("/chat_ai", async (req, res) => {
+  try {
+    await handleChat(req, res);
+  } catch (error) {
+    console.error("Error handling chat:", error);
+    res.status(500).json({ message: "Internal Server Error", code: 1 });
+  }
+});
 
 app.post("/signup", async (req, res) => {
   const { email, password } = req.body;
