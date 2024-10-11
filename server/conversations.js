@@ -77,7 +77,8 @@ export const getConversationByUserAndConversationId = async (userId, conversatio
       .from('conversations')
       .select('*')
       .eq('user_id', userId)
-      .eq('conversation_id', conversationId);
+      .eq('conversation_id', conversationId)
+      .order('created_at', { ascending: true });
 
     if (error) throw error;
     return data;

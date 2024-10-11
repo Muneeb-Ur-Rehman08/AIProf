@@ -1,6 +1,6 @@
 import { HumanMessage, SystemMessage } from '@langchain/core/messages';
 import { ChatGroq } from '@langchain/groq';
-import { createConversation } from './conversations.js';
+import { createConversation, getConversationByUserAndConversationId } from './conversations.js';
 
 const models = {
   'gemma-7b-it': { name: 'Gemma-7b-it', tokens: 8192, developer: 'Google' },
@@ -15,6 +15,20 @@ const llm = new ChatGroq({
   streaming: true,
 });
 
+function transformMessages(content, type) {
+  const transformedMessage = {
+    id: ['langchain_core', 'messages', type],
+    lc: 1,
+    type: 'constructor',
+    kwargs: {
+      content: content,
+      additional_kwargs: {},
+      response_metadata: {},
+    },
+  };
+  return transformedMessage;
+}
+
 export const handleChat = async (req, res) => {
   const { model_option, prompt, user_id, conversation_id } = req.body;
 
@@ -27,10 +41,20 @@ export const handleChat = async (req, res) => {
     req.session.selected_model = model_option;
   }
 
+  const conversation = await getConversationByUserAndConversationId(user_id, conversation_id);
+  let messages = [];
+  if (Array.isArray(conversation) && conversation?.length > 0) {
+    for (let i = 0; i < conversation.length; i++) {
+      messages?.push(transformMessages(conversation[i]?.prompt, 'HumanMessage'));
+      messages?.push(transformMessages(conversation[i]?.content, 'SystemMessage'));
+    }
+  }
+
   const max_tokens_range = models[model_option]?.tokens || 8192;
 
   if (prompt) {
     const userMessage = new HumanMessage(prompt);
+    messages?.push(transformMessages(prompt, 'HumanMessage'));
     req.session.messages.push(userMessage);
 
     try {
@@ -43,10 +67,9 @@ export const handleChat = async (req, res) => {
       res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
       res.setHeader('Access-Control-Allow-Credentials', 'true');
       res.flushHeaders();
-
       let assistantContent = '';
       await llm.call(
-        req.session.messages,
+        messages,
         {},
         [
           {
