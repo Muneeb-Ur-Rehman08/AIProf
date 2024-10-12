@@ -14,13 +14,13 @@ export default function SupabaseAuth({ handleCancel }) {
     <div className="container-fluid vh-100 d-flex align-items-center justify-content-center position-absolute bg-black p-0 m-0" style={{ top: "0", left: "0", width: "100%", height: "100%", zIndex: 1000, opacity: 1 }}  >
       <button 
         onClick={handleCancel} 
-        className="btn btn-danger position-absolute animate__animated animate__fadeIn" 
+        className="btn btn-dark position-absolute animate__animated animate__bounceIn" 
         style={{ top: '20px', right: '20px', zIndex: 1100 }}
       >
-        <i className="fa fa-times" aria-hidden="true"></i> {/* Font Awesome cancel icon */}
+        <i className="fa text-white fa-times" aria-hidden="true"></i> {/* Font Awesome cancel icon */}
       </button>
       <div className="row w-100 h-100 gap-5 ">
-        <div className="col-lg-5 col-md-8 col-sm-10 d-flex align-items-center justify-content-center border-end border-dark animate__animated animate__fadeInUp" id="auth-container" style={{ backgroundColor: "#0d0d0d" }} >
+        <div className="col-lg-5 col-md-8 col-sm-10 d-flex align-items-center justify-content-center border-end border-dark animate__animated animate__fadeInLeft" id="auth-container" style={{ backgroundColor: "#0d0d0d" }} >
           <div className="login-container p-4 rounded w-100">
             <h1 className="text-white mb-2">Welcome back</h1>
             <p className="text-muted mb-4">Sign in to your account</p>
@@ -120,7 +120,7 @@ export default function SupabaseAuth({ handleCancel }) {
             />
           </div>
         </div>
-        <div className="col-lg-7 d-none d-lg-block mx-auto animate__animated animate__fadeInRight" style={{ marginTop: "13%", fontSize: "25px", width: "40%" }} id="testimonial-container" >
+        <div className="col-lg-7 d-none d-lg-block mx-auto animate__animated animate__backInDown" style={{ marginTop: "13%", fontSize: "25px", width: "40%" }} id="testimonial-container" >
           <div className="testimonial p-4">
             <blockquote className="text-white mb-4">
               Working with @supabase has been one of the best dev experiences I've had lately. Incredibly easy to set up, great documentation, and so many fewer hoops to jump through than the competition. I definitely plan to use it on any and all future projects.
