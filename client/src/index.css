@@ -1,0 +1,14 @@
+/* index.css */
+
+/* Customize the sign-in button */
+.sbui-btn {
+    background-color: #0f0 !important;
+    border-radius: 8px !important;
+  }
+  
+  /* Change the input field styles */
+  .sbui-input {
+    border-color: #0f0 !important;
+    padding: 12px !important;
+  }
+  
