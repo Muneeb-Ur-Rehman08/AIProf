@@ -16,6 +16,7 @@ import ListingHistory from "../components/chat/listing_history";
 import { EnhancedLoginWithSignup } from "../components/auth/enhanced-login-with-signup";
 import ListingConversation from "../components/chat/listing_conversation";
 import { useUserConversation } from "../context/UserConversationContext";
+import SupabaseAuth from "../components/auth/supabase-auth";
 
 const getAIResponse = async (
   userId: string,
@@ -71,6 +72,8 @@ export default function MultilingualVoiceChat() {
   const [attachments, setAttachments] = useState<
     Array<{ name: string; content: string; type: string }>
   >([]);
+
+  const { session } = useUserConversation();
   const [micPermission, setMicPermission] = useState<
     "granted" | "denied" | "prompt"
   >("prompt");
@@ -363,12 +366,8 @@ export default function MultilingualVoiceChat() {
 
   return (
     <>
-      {showLoginModal && (
-        <EnhancedLoginWithSignup
-          show={showLoginModal}
-          handleClose={() => setShowLoginModal(false)}
-          setToken={setToken}
-        />
+      {showLoginModal && !session && (
+          <SupabaseAuth />
       )}
       <div
         className="vh-100 d-flex"
