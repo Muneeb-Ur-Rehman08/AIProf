@@ -107,7 +107,7 @@ export default function MultilingualVoiceChat() {
 
       recognitionRef.current.onerror = (event: any) => {
         console.error("Speech recognition error", event.error);
-        alert("Failed to recognize speech. Please try again.");
+        console.error("Failed to recognize speech. Please try again.");
         setIsListening(false);
       };
 
@@ -295,7 +295,7 @@ export default function MultilingualVoiceChat() {
         });
       } catch (error) {
         console.error("Failed to get AI response:", error);
-        alert("Failed to get AI response. Please try again.");
+        console.error("Failed to get AI response. Please try again.", error);
       } finally {
         setIsSending(false);
       }

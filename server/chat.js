@@ -43,10 +43,10 @@ export const handleChat = async (req, res) => {
 
   const conversation = await getConversationByUserAndConversationId(user_id, conversation_id);
   let messages = [];
-  if (Array.isArray(conversation) && conversation?.length > 0) {
+  if (Array.isArray(conversation) && conversation.length > 0) {
     for (let i = 0; i < conversation.length; i++) {
-      messages?.push(transformMessages(conversation[i]?.prompt, 'HumanMessage'));
-      messages?.push(transformMessages(conversation[i]?.content, 'SystemMessage'));
+      messages.push(transformMessages(conversation[i].prompt, 'HumanMessage'));
+      messages.push(transformMessages(conversation[i].content, 'SystemMessage'));
     }
   }
 
@@ -54,7 +54,7 @@ export const handleChat = async (req, res) => {
 
   if (prompt) {
     const userMessage = new HumanMessage(prompt);
-    messages?.push(transformMessages(prompt, 'HumanMessage'));
+    messages.push(transformMessages(prompt, 'HumanMessage'));
     req.session.messages.push(userMessage);
 
     try {
@@ -62,11 +62,11 @@ export const handleChat = async (req, res) => {
       llm.maxTokens = max_tokens_range;
 
       res.setHeader('Content-Type', 'text/event-stream');
-      res.setHeader('Cache-Control', 'no-cache');
       res.setHeader('Connection', 'keep-alive');
       res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
       res.setHeader('Access-Control-Allow-Credentials', 'true');
       res.flushHeaders();
+      
       let assistantContent = '';
       await llm.call(
         messages,
@@ -89,7 +89,11 @@ export const handleChat = async (req, res) => {
       res.write('\n\n');
       res.end();
     } catch (e) {
-      res.status(500).json({ error: e.message });
+      if (!res.headersSent) {
+        res.status(500).json({ error: e.message });
+      } else {
+        console.error('Error after headers sent:', e);
+      }
     }
   } else {
     res.json({ messages: req.session.messages });
