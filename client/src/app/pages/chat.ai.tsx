@@ -367,7 +367,9 @@ export default function MultilingualVoiceChat() {
   return (
     <>
       {showLoginModal && !session && (
-          <SupabaseAuth />
+          <SupabaseAuth 
+            handleCancel={() => setShowLoginModal(false)}
+          />
       )}
       <div
         className="vh-100 d-flex"
