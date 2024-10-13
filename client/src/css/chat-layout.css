@@ -1,0 +1,13 @@
+.chat-layout-button:hover {
+    background-color: rgba(77, 77, 77, 0.4) !important;
+    color: white !important;
+    cursor: pointer !important;
+}
+.chat-layout-button:active {
+    outline: none !important;
+    border: none !important;
+}
+.chat-layout-button:focus-visible {
+    outline: none !important;
+    border: none !important;
+}

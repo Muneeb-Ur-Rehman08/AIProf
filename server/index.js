@@ -23,7 +23,7 @@ const __dirname = path.dirname(__filename);
 const parentDir = path.resolve(__dirname, '..');
 
 // Serve static files from the React app
-app.use(express.static(path.join(parentDir, 'client/build')));
+// app.use(express.static(path.join(parentDir, 'client/build')));
 
 app.use(
   cors({
@@ -116,12 +116,12 @@ app.get("/conversationbyuserandconversationid", async (req, res) => {
 
 
 // Catch all other routes and return the React app
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(parentDir, 'client/build/index.html'));
-});
+// app.get('*', (req, res) => {
+//   res.sendFile(path.resolve(parentDir, 'client/build/index.html'));
+// });
 
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });

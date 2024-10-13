@@ -23,14 +23,13 @@ const ListingHistory = ({ setSelectedConversation }) => {
     return (
         <div
             className="overflow-auto flex-grow-1 mb-3 listing-history custom-scrollbar"
-            style={{ maxHeight: "60vh" }}
+            // style={{ maxHeight: "60vh" }}
         >
             {list && _.isArray(list) && list?.length > 0 && list?.map((item, index) => (
                 <>
                     <div className="text-muted mb-1">{item?.created_at}</div>
                     <button
-                        className="btn text-start text-white p-2 mb-2 w-100 d-flex justify-content-between"
-                        style={{ background: "#3f3f41", borderRadius: "8px" }}
+                        className="btn text-start text-white p-2 mb-2 w-100 d-flex justify-content-between rounded chat-layout-button"
                         onClick={() => {
                             let findItem = conversations?.find(conversation => conversation.conversation_id == item?.conversation_id);
                             setSelectedConversation(findItem);

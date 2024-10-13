@@ -17,6 +17,7 @@ import { EnhancedLoginWithSignup } from "../components/auth/enhanced-login-with-
 import ListingConversation from "../components/chat/listing_conversation";
 import { useUserConversation } from "../context/UserConversationContext";
 import SupabaseAuth from "../components/auth/supabase-auth";
+import "../../css/chat-layout.css";
 
 const getAIResponse = async (
   userId: string,
@@ -372,22 +373,24 @@ export default function MultilingualVoiceChat() {
           />
       )}
       <div
-        className="vh-100 d-flex"
+        className="vh-100 row"
         style={{
-          background:
-            "linear-gradient(to bottom right, #ff99cc, #ff6699, #ff3366)",
+          // background:
+          //   "linear-gradient(to bottom right, #ff99cc, #ff6699, #ff3366)",
+          display: "grid",
+          gridTemplateColumns: "1fr 4fr",
         }}
       >
         {/* Sidebar */}
         <div
-          className={`d-flex flex-column p-3 text-white ${
+          className={`px-3 mx-2 py-2 bg-dark text-white col-md-3 col-lg-2 d-flex flex-column w-100  ${
             showSidebar ? "d-block" : "d-none"
-          } d-md-flex`}
+          } d-md-block`}
           style={{
-            backgroundColor: "#2c2c2e",
-            // width: "25%",
-            maxWidth: "30%",
-            maxHeight: "100vh",
+            // backgroundColor: "#2c2c2e",
+            height: "100vh",
+            position: "relative",
+            borderRight: "1px solid #4d4949",
           }}
         >
           <div className="d-flex justify-content-between align-items-center mb-4">
@@ -395,15 +398,13 @@ export default function MultilingualVoiceChat() {
               <div
                 className="rounded-circle"
                 style={{
-                  width: "40px",
-                  height: "40px",
                   backgroundColor: "#3f3f41",
                 }}
               ></div>
               <div className="fw-bold">AIProf</div>
             </div>
             <button
-              className="btn btn-outline-light"
+              className="btn btn-outline-light chat-layout-button"
               style={{ border: "none" }}
             >
               <Settings size={18} />
@@ -412,13 +413,7 @@ export default function MultilingualVoiceChat() {
 
           <div className="mb-4">
             <button
-              className="btn text-white text-start mb-3"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "10px",
-                textWrap: "nowrap",
-              }}
+              className="w-100 btn text-white text-start mb-3 d-flex flex-row align-items-center gap-2 p-2 rounded-4 chat-layout-button"
               onClick={() => setSelectedConversation(null)}
             >
               <MessageSquare /> Ask me anything
@@ -427,9 +422,9 @@ export default function MultilingualVoiceChat() {
 
           <ListingHistory setSelectedConversation={setSelectedConversation} />
 
-          <div className="mt-auto mb-2">
+          <div className="position-absolute " style={{ bottom: "16px", left: "20px", right: "20px" }}>
             <button
-              className="btn btn-outline-light w-100 d-flex flex-row justify-content-center align-items-center gap-2"
+              className="btn btn-outline-light outline-none w-100 d-flex flex-row justify-content-center align-items-center gap-2 chat-layout-button"
               onClick={() => setShowLoginModal(true)}
             >
               <User size={18} />{" "}
@@ -443,7 +438,7 @@ export default function MultilingualVoiceChat() {
         </div>
 
         {/* Main chat area */}
-        <div className="flex-grow-1 d-flex flex-column">
+        <div className="d-flex flex-column col-md-9 col-lg-10 w-100 mb-auto" style={{ height: "100vh"}}>
           {/* Sign Out Button */}
           {token?.user?.id && (
             <div className="d-flex justify-content-end p-2">
@@ -535,6 +530,7 @@ export default function MultilingualVoiceChat() {
         </div>
 
         {/* Microphone Permission Modal */}
+      </div>
         {showMicPermissionDialog && (
           <div className="modal d-block" tabIndex={-1} role="dialog">
             <div className="modal-dialog" role="document">
@@ -574,7 +570,6 @@ export default function MultilingualVoiceChat() {
             </div>
           </div>
         )}
-      </div>
     </>
   );
 }
