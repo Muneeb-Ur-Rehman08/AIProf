@@ -1,0 +1,33 @@
+.chat-layout-button:hover {
+    background-color: rgba(77, 77, 77, 0.4) !important;
+    color: white !important;
+    cursor: pointer !important;
+}
+.chat-layout-button:active {
+    outline: none !important;
+    border: none !important;
+}
+.chat-layout-button:focus-visible {
+    outline: none !important;
+    border: none !important;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: rgba(77, 77, 77, 0.6);
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+}
+
+.custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(77, 77, 77, 0.6) transparent;
+}

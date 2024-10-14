@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, useEffect } from "react";
+import React, { createContext, useState, useContext, useEffect, useRef } from "react";
 import axios from "axios";
 import { getUser } from "../../comon.lib";
 import _ from "lodash";
@@ -18,17 +18,17 @@ const supabase = createClient(process.env.REACT_APP_SUPABASE_URL, process.env.RE
 export const UserConversationProvider = ({ children }) => {
   const [conversations, setConversations] = useState([]);
   const [session, setSession] = useState(null)
+  const [selectedConversation, setSelectedConversation] = useState(null);
+  const fetchHistoryCalled = useRef(false);
 
-
-
-  const userData = getUser();
   const fetchHistory = async () => {
-    if (userData?.user?.id) {
+    if (session?.user?.id && !fetchHistoryCalled.current) {
+      fetchHistoryCalled.current = true;
       const response = await axios.get(
         `${process.env.REACT_APP_BACKEND_URL}/conversations`,
         {
           params: {
-            user_id: userData?.user?.id,
+            user_id: session?.user?.id,
           },
         }
       );
@@ -63,15 +63,36 @@ export const UserConversationProvider = ({ children }) => {
     return () => subscription.unsubscribe()
   }, [])
 
+  useEffect(() => {
+    if (session && session?.user?.id && !conversations?.length) {
+      fetchHistory();
+    }
+  }, [session, window.location.href]);
+
+  const signOut = async () => {
+    await supabase.auth.signOut();
+    localStorage.clear();
+    sessionStorage.clear();
+    if (window.SecureStore) {
+      window.SecureStore.clearAll();
+    }
+    setSession(null);
+    setConversations([]);
+    setSelectedConversation(null);
+    fetchHistoryCalled.current = false;
+  }
+
   const useConversationProps = {
     conversations: _.isArray(conversations) ? conversations : [],
     setConversations,
-    userData,
     addConversation,
     removeConversation,
     fetchHistory,
     session,
     supabase,
+    signOut,
+    selectedConversation,
+    setSelectedConversation,
   };
 
   return (

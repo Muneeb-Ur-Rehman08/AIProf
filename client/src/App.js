@@ -71,8 +71,8 @@ function App() {
   return (
     <Router>
       <UserConversationProvider>
-      <Routes>
-        <Route path="/" element={<MainPage />} />
+        <Routes>
+          <Route path="/" element={<MainPage />} />
           <Route path="/chat" element={<MultilingualVoiceChat />} />
         </Routes>
       </UserConversationProvider>

@@ -11,12 +11,15 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
-import { getUser, sginout, uuid_generate_v4 } from "../../comon.lib";
+import { getUser, Teachers, uuid_generate_v4 } from "../../comon.lib";
 import ListingHistory from "../components/chat/listing_history";
 import { EnhancedLoginWithSignup } from "../components/auth/enhanced-login-with-signup";
 import ListingConversation from "../components/chat/listing_conversation";
 import { useUserConversation } from "../context/UserConversationContext";
 import SupabaseAuth from "../components/auth/supabase-auth";
+import "../../css/chat-layout.css";
+import SelectField from "../components/select-field";
+import BootstrapSwitchButton from "bootstrap-switch-button-react";
 
 const getAIResponse = async (
   userId: string,
@@ -66,29 +69,36 @@ const getAIResponse = async (
 export default function MultilingualVoiceChat() {
   const [inputValue, setInputValue] = useState("");
   const [isListening, setIsListening] = useState(false);
-  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState({
+    speaking: false,
+    id: "",
+  });
   const [isUploading, setIsUploading] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const [attachments, setAttachments] = useState<
     Array<{ name: string; content: string; type: string }>
   >([]);
 
-  const { session } = useUserConversation();
   const [micPermission, setMicPermission] = useState<
     "granted" | "denied" | "prompt"
   >("prompt");
   const [showMicPermissionDialog, setShowMicPermissionDialog] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState("en-US");
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const [showSettingsDropdown, setShowSettingsDropdown] = useState(false);
 
   const [showSidebar, setShowSidebar] = useState(window.innerWidth <= 768);
   const [token, setToken] = useState(getUser());
   const fileInputRef = useRef<HTMLInputElement>(null);
   const chatEndRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<any>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const synthRef = useRef<SpeechSynthesis | null>(null);
-  const [selectedConversation, setSelectedConversation] = useState<any>(null);
-  const { conversations, setConversations } = useUserConversation();
+  const [speakingMode, setSpeakingMode] = useState(false);
+  const { conversations, setConversations, signOut, session, selectedConversation, setSelectedConversation } = useUserConversation();
+  // get teacher and question from url
+  const teacherName = localStorage.getItem("teacherName");
+  const question = localStorage.getItem("question");
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [selectedConversation?.messages]);
@@ -105,7 +115,7 @@ export default function MultilingualVoiceChat() {
           .map((result: any) => result[0].transcript)
           .join("");
 
-        setInputValue((prevInput) => prevInput + " " + transcript);
+        setInputValue((prevInput) => transcript);
       };
 
       recognitionRef.current.onerror = (event: any) => {
@@ -136,6 +146,49 @@ export default function MultilingualVoiceChat() {
       }
     };
   }, [selectedLanguage]);
+
+  const startVisualizing = useCallback(() => {
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      navigator.mediaDevices.getUserMedia({ audio: true })
+        .then(stream => {
+          const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+          const analyser = audioContext.createAnalyser();
+          const source = audioContext.createMediaStreamSource(stream);
+          source.connect(analyser);
+          analyser.fftSize = 256;
+
+          const bufferLength = analyser.frequencyBinCount;
+          const dataArray = new Uint8Array(bufferLength);
+
+          const canvas = canvasRef.current;
+          const ctx = canvas?.getContext("2d");
+
+          const draw = () => {
+            requestAnimationFrame(draw);
+
+            analyser.getByteFrequencyData(dataArray);
+
+            if (ctx && canvas) {
+              ctx.clearRect(0, 0, canvas.width, canvas.height);
+              const barWidth = (canvas.width / bufferLength) * 2.5;
+              let barHeight;
+              let x = 0;
+
+              for (let i = 0; i < bufferLength; i++) {
+                barHeight = dataArray[i];
+                ctx.fillStyle = "#4fff78"; // Set the bar color to green
+                ctx.fillRect(x, canvas.height - barHeight / 2, barWidth, barHeight / 2);
+
+                x += barWidth + 1; // Space between bars
+              }
+            }
+          };
+
+          draw();
+        })
+        .catch(err => console.error('Error accessing microphone:', err));
+    }
+  }, []);
 
   const checkMicrophonePermission = useCallback(async () => {
     try {
@@ -172,6 +225,7 @@ export default function MultilingualVoiceChat() {
       } else {
         try {
           await recognitionRef.current.start();
+          startVisualizing();
           setIsListening(true);
         } catch (err) {
           console.error("Error starting speech recognition:", err);
@@ -186,12 +240,19 @@ export default function MultilingualVoiceChat() {
   }, [isListening, micPermission]);
 
   const speakMessage = useCallback(
-    (text: string) => {
+    (text: string, id: string) => {
+        stopSpeaking();
       if (synthRef.current) {
-        setIsSpeaking(true);
+        setIsSpeaking({
+          speaking: true,
+          id: id,
+        });
         const utterance = new SpeechSynthesisUtterance(text);
         utterance.lang = selectedLanguage;
-        utterance.onend = () => setIsSpeaking(false);
+        utterance.onend = () => setIsSpeaking({
+          speaking: false,
+          id: "",
+        });
         synthRef.current.speak(utterance);
       }
     },
@@ -201,14 +262,20 @@ export default function MultilingualVoiceChat() {
   const stopSpeaking = useCallback(() => {
     if (synthRef.current) {
       synthRef.current.cancel();
-      setIsSpeaking(false);
+      setIsSpeaking({
+        speaking: false,
+        id: "",
+      });
     }
   }, []);
 
-  const handleSend = useCallback(async () => {
+  const handleSend = useCallback(async (inputValue: string) => {
     let uniqueId = uuid_generate_v4();
     let conversationId = selectedConversation?.conversation_id || uuid_generate_v4();
-    let messageToSpeak = "";
+    let messageToSpeak = {
+      id: '',
+      content: '',
+    };
     if (inputValue.trim() || attachments.length > 0) {
       setIsSending(true);
       setSelectedConversation((prevMessages: any) => {
@@ -230,7 +297,7 @@ export default function MultilingualVoiceChat() {
       });
       try {
         await getAIResponse(
-          token?.user?.id,
+          session?.user?.id,
           conversationId,
           inputValue,
           (chunk) => {
@@ -241,7 +308,8 @@ export default function MultilingualVoiceChat() {
               );
               if (messageToUpdate) {
                 messageToUpdate.content += chunk;
-                messageToSpeak += chunk;
+                messageToSpeak.content += chunk;
+                messageToSpeak.id = messageToUpdate?.id;
               }
               return {
                 ...prevMessages,
@@ -269,7 +337,7 @@ export default function MultilingualVoiceChat() {
                       id: uniqueId,
                       conversation_id: conversationId,
                       prompt: inputValue,
-                      content: messageToSpeak,
+                      content: messageToSpeak.content,
                       type: "text",
                     },
                   ],
@@ -287,7 +355,7 @@ export default function MultilingualVoiceChat() {
                     id: uniqueId,
                     conversation_id: conversationId,
                     prompt: inputValue,
-                    content: messageToSpeak,
+                    content: messageToSpeak.content,
                     type: "text",
                   },
                 ],
@@ -302,15 +370,19 @@ export default function MultilingualVoiceChat() {
       } finally {
         setIsSending(false);
       }
-      speakMessage(messageToSpeak);
+      if (speakingMode) {
+        speakMessage(messageToSpeak.content, messageToSpeak.id);
+      }
     }
     setInputValue("");
+    localStorage.removeItem("teacherName");
+    localStorage.removeItem("question");
   }, [inputValue, attachments, selectedConversation, speakMessage]);
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      handleSend();
+      handleSend(inputValue);
     }
   };
 
@@ -355,37 +427,44 @@ export default function MultilingualVoiceChat() {
     }
   };
 
-  const handleSignOut = () => {
-    sginout();
-    setToken(null);
-  };
-
   useEffect(() => {
     checkMicrophonePermission();
   }, [checkMicrophonePermission]);
 
+  useEffect(() => {
+    if (question) {
+      setInputValue(question);
+      handleSend(question);
+    }
+  }, [question]);
+
+
   return (
     <>
       {showLoginModal && !session && (
-          <SupabaseAuth />
+          <SupabaseAuth 
+            handleCancel={() => setShowLoginModal(false)}
+          />
       )}
       <div
-        className="vh-100 d-flex"
+        className="vh-100 row"
         style={{
-          background:
-            "linear-gradient(to bottom right, #ff99cc, #ff6699, #ff3366)",
+          // background:
+          //   "linear-gradient(to bottom right, #ff99cc, #ff6699, #ff3366)",
+          display: "grid",
+          gridTemplateColumns: "1fr 4fr",
         }}
       >
         {/* Sidebar */}
         <div
-          className={`d-flex flex-column p-3 text-white ${
+          className={`px-3 mx-2 py-2 bg-dark text-white col-md-3 col-lg-2 d-flex flex-column w-100  ${
             showSidebar ? "d-block" : "d-none"
-          } d-md-flex`}
+          } d-md-block`}
           style={{
-            backgroundColor: "#2c2c2e",
-            // width: "25%",
-            maxWidth: "30%",
-            maxHeight: "100vh",
+            // backgroundColor: "#2c2c2e",
+            height: "100vh",
+            position: "relative",
+            borderRight: "1px solid #4d4949",
           }}
         >
           <div className="d-flex justify-content-between align-items-center mb-4">
@@ -393,30 +472,49 @@ export default function MultilingualVoiceChat() {
               <div
                 className="rounded-circle"
                 style={{
-                  width: "40px",
-                  height: "40px",
                   backgroundColor: "#3f3f41",
                 }}
               ></div>
               <div className="fw-bold">AIProf</div>
             </div>
-            <button
-              className="btn btn-outline-light"
-              style={{ border: "none" }}
-            >
-              <Settings size={18} />
-            </button>
+            <div className="position-relative">
+              <button
+                className="btn btn-outline-light chat-layout-button"
+                style={{ border: "none" }}
+                onClick={() => setShowSettingsDropdown(!showSettingsDropdown)}
+                // onBlur={() => setShowSettingsDropdown(false)}
+              >
+                <Settings size={18} />
+              </button>
+              {/* {showSettingsDropdown && session && (
+                <div
+                  className="dropdown-menu show"
+                  style={{
+                    position: "absolute",
+                    top: "100%",
+                    right: 0,
+                    backgroundColor: "#343a40",
+                    border: "none",
+                    boxShadow: "0 0.5rem 1rem rgba(0, 0, 0, 0.15)",
+                  }}
+                >
+                  <button
+                    className="dropdown-item text-white"
+                    onClick={ () => {
+                      signOut();
+                      setShowSettingsDropdown(false);
+                    }}
+                  >
+                    <LogOut size={18} /> Sign Out
+                  </button>
+                </div>
+              )} */}
+            </div>
           </div>
 
           <div className="mb-4">
             <button
-              className="btn text-white text-start mb-3"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "10px",
-                textWrap: "nowrap",
-              }}
+              className="w-100 btn text-white text-start mb-3 d-flex flex-row align-items-center gap-2 p-2 rounded-4 chat-layout-button"
               onClick={() => setSelectedConversation(null)}
             >
               <MessageSquare /> Ask me anything
@@ -425,32 +523,39 @@ export default function MultilingualVoiceChat() {
 
           <ListingHistory setSelectedConversation={setSelectedConversation} />
 
-          <div className="mt-auto mb-2">
+          <div className="position-absolute " style={{ bottom: "16px", left: "20px", right: "20px" }}>
             <button
-              className="btn btn-outline-light w-100 d-flex flex-row justify-content-center align-items-center gap-2"
-              onClick={() => setShowLoginModal(true)}
+              className="btn btn-outline-light outline-none w-100 d-flex flex-row justify-content-center align-items-center gap-2 chat-layout-button"
+              onClick={() => {
+                if (session) {
+                  signOut();
+                } else {
+                  setShowLoginModal(true);
+                }
+              }}
             >
               <User size={18} />{" "}
-              {token?.user?.id && token?.user?.user_metadata
-                ? token?.user?.user_metadata?.full_name ||
-                  token?.user?.user_metadata?.email ||
-                  "Muneeb"
-                : "Login"}
+              {session ? "Sign Out" : "Login"}
             </button>
           </div>
         </div>
 
         {/* Main chat area */}
-        <div className="flex-grow-1 d-flex flex-column">
+        <div className="d-flex flex-column col-md-9 col-lg-10 w-100 mb-auto" style={{ height: "100vh"}}>
           {/* Sign Out Button */}
-          {token?.user?.id && (
-            <div className="d-flex justify-content-end p-2">
-              <button className="btn btn-outline-light" onClick={handleSignOut}>
-                <LogOut size={18} /> Sign Out -
-              </button>
+          <div className="p-2 w-100 d-flex flex-row gap-2">
+            <div className="w-25">
+              <SelectField
+                options={Teachers}
+                onChange={(value: any) => console.log(value)}
+              />
             </div>
-          )}
-
+          {/* toggle button to change the speaking state */}
+          <BootstrapSwitchButton checked={speakingMode} width={75} height={25} onlabel="Speak" offlabel="Mute" onChange={() => setSpeakingMode(!speakingMode)}
+          onstyle="primary"
+          offstyle="secondary"
+          />
+          </div>
           {/* Toggle sidebar button (visible on small screens) */}
           <button
             className="btn btn-light d-md-none position-absolute"
@@ -463,7 +568,6 @@ export default function MultilingualVoiceChat() {
           {/* Chat messages */}
           <ListingConversation
             selectedConversation={selectedConversation}
-            token={token}
             isSpeaking={isSpeaking}
             stopSpeaking={stopSpeaking}
             speakMessage={speakMessage}
@@ -504,17 +608,24 @@ export default function MultilingualVoiceChat() {
                   color: "white",
                 }}
               />
-              <button
-                className={`btn ${
-                  isListening ? "btn-danger" : "btn-outline-light"
-                } me-2`}
+              <div
+                className={`btn me-2`}
                 onClick={toggleListening}
+                style={{
+                  backgroundColor: isListening ? "dark" : "rgba(255, 255, 255, 0.1)",
+                  border: isListening ? "2px solid dark" : "2px solid rgba(255, 255, 255, 0.1)",
+                  transition: "background-color 0.3s, border 0.3s",
+                }}
               >
-                <Mic size={24} />
-              </button>
+                {isListening ? (
+                  <canvas ref={canvasRef} width={24} height={18} style={{ rotate: "-90deg", opacity: 1 }} />
+                ) : (
+                  <Mic size={24} />
+                )}
+              </div>
               <button
                 className="btn btn-primary"
-                onClick={handleSend}
+                onClick={() => handleSend(inputValue)}
                 disabled={
                   isSending || (!inputValue.trim() && attachments.length === 0)
                 }
@@ -533,6 +644,7 @@ export default function MultilingualVoiceChat() {
         </div>
 
         {/* Microphone Permission Modal */}
+      </div>
         {showMicPermissionDialog && (
           <div className="modal d-block" tabIndex={-1} role="dialog">
             <div className="modal-dialog" role="document">
@@ -572,7 +684,6 @@ export default function MultilingualVoiceChat() {
             </div>
           </div>
         )}
-      </div>
     </>
   );
 }

@@ -5,6 +5,7 @@ import particalConfig from '../../particals/partical.config';
 import muteMic from '../../../assets/images/mic/muteMic.svg';
 import classNameroomScenario from '../../../assets/images/sections-bg-images/classroomScenario.jpg';
 import TD_Animation_Style_Einstein_front from '../../../assets/images/hero/3D_Animation_Style_Einstein_front.png';
+import { useNavigate } from 'react-router-dom';
 
 const Hero = () => {
   const [teacherName, setTeacherName] = useState('');
@@ -12,7 +13,7 @@ const Hero = () => {
   const [avatarVisible, setAvatarVisible] = useState(false);
   const [question, setQuestion] = useState('');
   const [response, setResponse] = useState('');
-
+  const navigate = useNavigate();
   const toggleInput = () => {
     setInputVisible(!inputVisible);
   };
@@ -24,8 +25,9 @@ const Hero = () => {
   };
 
   const handleAsk = () => {
-    // Logic to handle asking a question can be added here
-    setResponse(`You asked: ${question}`);
+    localStorage.setItem("teacherName", teacherName);
+    localStorage.setItem("question", question);
+    navigate(`/chat`);
   };
 
   return (
@@ -123,7 +125,7 @@ const Hero = () => {
 
               <div className="askContainer">
                 <div className="askflex-container">
-                  <input type="text" value={question} onChange={(e) => setQuestion(e.target.value)} id="question" placeholder="Enter your question..." aria-label="chatbot" />
+                  <input type="text" value={question} onChange={(e) => setQuestion(e.target.value)} id="question" placeholder="Enter your question..." aria-label="chatbot" autoComplete="off" />
                   <button onClick={handleAsk} id="ask">
                     Ask
                   </button>
