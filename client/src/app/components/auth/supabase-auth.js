@@ -117,6 +117,7 @@ export default function SupabaseAuth({ handleCancel }) {
                   },
                 },
               }}
+              redirectTo="http://localhost:3000/chat"
             />
           </div>
         </div>

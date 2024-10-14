@@ -1,58 +1,97 @@
-import React from 'react';
-import { PlayCircle, StopCircle } from 'lucide-react';
+import React from "react";
+import { PlayCircle, StopCircle } from "lucide-react";
+import { useUserConversation } from "../../context/UserConversationContext";
+import ReactMarkdown from "react-markdown";
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
+import "katex/dist/katex.min.css";
+import { LineWave } from "react-loader-spinner";
 
 const ListingConversation = ({
   selectedConversation,
-  token,
   isSpeaking,
   stopSpeaking,
   speakMessage,
   chatEndRef,
 }) => {
+  const { session } = useUserConversation();
   return (
     <div
       className="flex-grow-1 p-3 overflow-auto"
-      style={{ backgroundColor: "rgba(255, 255, 255, 0.1)" }}
+      style={{
+        backgroundColor: "rgba(255, 255, 255, 0.1)",
+        scrollbarWidth: "none",
+        msOverflowStyle: "none",
+      }}
     >
       {selectedConversation?.messages?.length > 0 ? (
         selectedConversation?.messages.map((message) => (
-          <React.Fragment key={message.id} className="w-100">
+          <div key={message.id} style={{ width: "90%" }} className="mx-auto">
             <div className="d-flex justify-content-end mb-3">
               <div
-                className="p-3 rounded-lg bg-primary text-white message-container"
-                style={{ maxWidth: "70%", minWidth: "50%", wordBreak: "break-word" }} // Consistent width and prevent overflow
+                className="p-3 rounded-pill text-white message-container bg-primary"
+                style={{
+                  maxWidth: "70%",
+                  minWidth: "50%",
+                  wordBreak: "break-word",
+                  // backgroundColor: "#7A8396",
+                }} // Consistent width and prevent overflow
               >
                 {message.prompt}
               </div>
             </div>
             <div className="d-flex justify-content-start mb-3">
-              <div
-                className="p-3 rounded-lg bg-light text-dark message-container"
-                style={{ maxWidth: "70%", minWidth: "50%", wordBreak: "break-word" }} // Consistent width and prevent overflow
-              >
+              {message.content ? (
                 <div
-                  dangerouslySetInnerHTML={{ __html: message.content }}
-                />
-                <div className="d-flex justify-content-end mt-2">
-                  {isSpeaking ? (
-                    <button
-                      className="btn btn-link text-dark"
-                      onClick={stopSpeaking}
-                    >
-                      <StopCircle size={18} />
-                    </button>
-                  ) : (
-                    <button
-                      className="btn btn-link text-dark"
-                      onClick={() => speakMessage(message.content)}
-                    >
-                      <PlayCircle size={18} />
-                    </button>
-                  )}
+                  className="p-3 rounded-lg text-light message-container position-relative"
+                  style={{
+                    maxWidth: "70%",
+                    minWidth: "50%",
+                    wordBreak: "break-word",
+                    backgroundColor: "rgba(255, 255, 255, 0.03)",
+                  }} // Consistent width and prevent overflow
+                >
+                  <ReactMarkdown
+                    children={message.content}
+                    remarkPlugins={[remarkMath]}
+                    rehypePlugins={[rehypeKatex]}
+                  />
+                  <div className="position-absolute cursor-pointer" style={{bottom: "10px", right: "10px"}}>
+                    {isSpeaking.speaking && isSpeaking.id == message.content ? (
+                      <div
+                        className="cursor-pointer"
+                        onClick={() => stopSpeaking(message.content)}
+                        style={{cursor: "pointer"}}
+                      >
+                        <StopCircle size={18} />
+                      </div>
+                    ) : (
+                      <div
+                        className="cursor-pointer"
+                        onClick={() => speakMessage(message.content)}
+                        style={{cursor: "pointer"}}
+                      >
+                        <PlayCircle size={18} />
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <LineWave
+                  visible={true}
+                  height="75"
+                  width="75"
+                  color="#4fa94d"
+                  ariaLabel="line-wave-loading"
+                  wrapperStyle={{}}
+                  wrapperClass=""
+                  firstLineColor=""
+                  middleLineColor=""
+                  lastLineColor=""
+                />
+              )}
             </div>
-          </React.Fragment>
+          </div>
         ))
       ) : (
         <div
@@ -63,7 +102,10 @@ const ListingConversation = ({
             className="text-light mb-3"
             style={{ fontSize: "1.5rem", fontWeight: "bold" }}
           >
-            Hello, {token?.user?.user_metadata?.full_name || token?.user?.user_metadata?.email || 'Muneeb'}
+            Hello,{" "}
+            {session?.user?.user_metadata?.full_name ||
+              session?.user?.user_metadata?.email ||
+              "There"}
           </div>
           <div
             className="text-light mb-3"
