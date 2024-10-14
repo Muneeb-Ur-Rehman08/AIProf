@@ -32,7 +32,7 @@ const formatGroupLabel = (data: any) => (
 
 export default (props: any) => (
   <Select<any> 
-    defaultValue={props.options[1]}
+    defaultValue={props.options[0]}
     options={props.options}
     formatGroupLabel={formatGroupLabel}
     onChange={props.onChange}

@@ -94,8 +94,11 @@ export default function MultilingualVoiceChat() {
   const recognitionRef = useRef<any>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const synthRef = useRef<SpeechSynthesis | null>(null);
-  const [speakingMode, setSpeakingMode] = useState(true);
+  const [speakingMode, setSpeakingMode] = useState(false);
   const { conversations, setConversations, signOut, session, selectedConversation, setSelectedConversation } = useUserConversation();
+  // get teacher and question from url
+  const teacherName = localStorage.getItem("teacherName");
+  const question = localStorage.getItem("question");
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [selectedConversation?.messages]);
@@ -237,11 +240,12 @@ export default function MultilingualVoiceChat() {
   }, [isListening, micPermission]);
 
   const speakMessage = useCallback(
-    (text: string) => {
+    (text: string, id: string) => {
+        stopSpeaking();
       if (synthRef.current) {
         setIsSpeaking({
           speaking: true,
-          id: text,
+          id: id,
         });
         const utterance = new SpeechSynthesisUtterance(text);
         utterance.lang = selectedLanguage;
@@ -265,10 +269,13 @@ export default function MultilingualVoiceChat() {
     }
   }, []);
 
-  const handleSend = useCallback(async () => {
+  const handleSend = useCallback(async (inputValue: string) => {
     let uniqueId = uuid_generate_v4();
     let conversationId = selectedConversation?.conversation_id || uuid_generate_v4();
-    let messageToSpeak = "";
+    let messageToSpeak = {
+      id: '',
+      content: '',
+    };
     if (inputValue.trim() || attachments.length > 0) {
       setIsSending(true);
       setSelectedConversation((prevMessages: any) => {
@@ -301,7 +308,8 @@ export default function MultilingualVoiceChat() {
               );
               if (messageToUpdate) {
                 messageToUpdate.content += chunk;
-                messageToSpeak += chunk;
+                messageToSpeak.content += chunk;
+                messageToSpeak.id = messageToUpdate?.id;
               }
               return {
                 ...prevMessages,
@@ -329,7 +337,7 @@ export default function MultilingualVoiceChat() {
                       id: uniqueId,
                       conversation_id: conversationId,
                       prompt: inputValue,
-                      content: messageToSpeak,
+                      content: messageToSpeak.content,
                       type: "text",
                     },
                   ],
@@ -347,7 +355,7 @@ export default function MultilingualVoiceChat() {
                     id: uniqueId,
                     conversation_id: conversationId,
                     prompt: inputValue,
-                    content: messageToSpeak,
+                    content: messageToSpeak.content,
                     type: "text",
                   },
                 ],
@@ -363,16 +371,18 @@ export default function MultilingualVoiceChat() {
         setIsSending(false);
       }
       if (speakingMode) {
-        speakMessage(messageToSpeak);
+        speakMessage(messageToSpeak.content, messageToSpeak.id);
       }
     }
     setInputValue("");
+    localStorage.removeItem("teacherName");
+    localStorage.removeItem("question");
   }, [inputValue, attachments, selectedConversation, speakMessage]);
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      handleSend();
+      handleSend(inputValue);
     }
   };
 
@@ -420,7 +430,15 @@ export default function MultilingualVoiceChat() {
   useEffect(() => {
     checkMicrophonePermission();
   }, [checkMicrophonePermission]);
-  
+
+  useEffect(() => {
+    if (question) {
+      setInputValue(question);
+      handleSend(question);
+    }
+  }, [question]);
+
+
   return (
     <>
       {showLoginModal && !session && (
@@ -607,7 +625,7 @@ export default function MultilingualVoiceChat() {
               </div>
               <button
                 className="btn btn-primary"
-                onClick={handleSend}
+                onClick={() => handleSend(inputValue)}
                 disabled={
                   isSending || (!inputValue.trim() && attachments.length === 0)
                 }

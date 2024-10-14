@@ -32,7 +32,11 @@ const ListingHistory = ({ setSelectedConversation }) => {
   return (
     <div
       className="overflow-auto flex-grow-1 mb-3 listing-history custom-scrollbar"
-      // style={{ maxHeight: "60vh" }}
+      style={{
+        maxHeight: "70vh",
+        // scrollbarWidth: "none",
+        // msOverflowStyle: "none",
+      }}
     >
       {list &&
         _.isArray(list) &&

@@ -57,10 +57,10 @@ const ListingConversation = ({
                     rehypePlugins={[rehypeKatex]}
                   />
                   <div className="position-absolute cursor-pointer" style={{bottom: "10px", right: "10px"}}>
-                    {isSpeaking.speaking && isSpeaking.id == message.content ? (
+                    {isSpeaking.speaking && isSpeaking.id == message.id ? (
                       <div
                         className="cursor-pointer"
-                        onClick={() => stopSpeaking(message.content)}
+                        onClick={() => stopSpeaking(message.id)}
                         style={{cursor: "pointer"}}
                       >
                         <StopCircle size={18} />
@@ -68,7 +68,7 @@ const ListingConversation = ({
                     ) : (
                       <div
                         className="cursor-pointer"
-                        onClick={() => speakMessage(message.content)}
+                        onClick={() => speakMessage(message.content, message.id)}
                         style={{cursor: "pointer"}}
                       >
                         <PlayCircle size={18} />

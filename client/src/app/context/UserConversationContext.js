@@ -67,10 +67,15 @@ export const UserConversationProvider = ({ children }) => {
     if (session && session?.user?.id && !conversations?.length) {
       fetchHistory();
     }
-  }, [session]);
+  }, [session, window.location.href]);
 
-  const signOut = () => {
-    supabase.auth.signOut();
+  const signOut = async () => {
+    await supabase.auth.signOut();
+    localStorage.clear();
+    sessionStorage.clear();
+    if (window.SecureStore) {
+      window.SecureStore.clearAll();
+    }
     setSession(null);
     setConversations([]);
     setSelectedConversation(null);

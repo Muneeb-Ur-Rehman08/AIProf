@@ -162,6 +162,7 @@ export const removeSpecialCharacters = (text) => {
 };
 
 export const Teachers = [
+  { label: "Select Teacher", value: "" },
   { label: "Imran", value: "Imran" },
   { label: "Sajjad", value: "Sajjad" },
   { label: "Zeeshan", value: "Zeeshan" },
