@@ -10,6 +10,7 @@ import {
   Loader,
   ChevronLeft,
   ChevronRight,
+  ChevronDown,
 } from "lucide-react";
 import { getUser, Teachers, uuid_generate_v4 } from "../../comon.lib";
 import ListingHistory from "../components/chat/listing_history";
@@ -99,6 +100,10 @@ export default function MultilingualVoiceChat() {
   // get teacher and question from url
   const teacherName = localStorage.getItem("teacherName");
   const question = localStorage.getItem("question");
+  const [fontSize, setFontSize] = useState(16);
+  const [showFontSizeDropdown, setShowFontSizeDropdown] = useState(false);
+  const fontSizeDropdownRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [selectedConversation?.messages]);
@@ -438,6 +443,18 @@ export default function MultilingualVoiceChat() {
     }
   }, [question]);
 
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (fontSizeDropdownRef.current && !fontSizeDropdownRef.current.contains(event.target as Node)) {
+        setShowFontSizeDropdown(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <>
@@ -542,19 +559,61 @@ export default function MultilingualVoiceChat() {
 
         {/* Main chat area */}
         <div className="d-flex flex-column col-md-9 col-lg-10 w-100 mb-auto" style={{ height: "100vh"}}>
-          {/* Sign Out Button */}
-          <div className="p-2 w-100 d-flex flex-row gap-2">
-            <div className="w-25">
+          {/* Header area */}
+          <div className="p-2 w-100 d-flex flex-row justify-content-between align-items-center">
+            {/* Teacher dropdown */}
+            <div className="d-flex align-items-center" style={{ width: '30%' }}>
               <SelectField
                 options={Teachers}
                 onChange={(value: any) => console.log(value)}
               />
             </div>
-          {/* toggle button to change the speaking state */}
-          <BootstrapSwitchButton checked={speakingMode} width={75} height={25} onlabel="Speak" offlabel="Mute" onChange={() => setSpeakingMode(!speakingMode)}
-          onstyle="primary"
-          offstyle="secondary"
-          />
+
+            {/* Font size dropdown and Speaking mode toggle - right aligned */}
+            <div className="d-flex align-items-center" ref={fontSizeDropdownRef}>
+              {/* Speaking mode toggle */}
+              <div style={{ marginRight: '1rem' }}>
+                <BootstrapSwitchButton 
+                  checked={speakingMode} 
+                  width={75} 
+                  height={25} 
+                  onlabel="Speak" 
+                  offlabel="Mute" 
+                  onChange={() => setSpeakingMode(!speakingMode)}
+                  onstyle="primary"
+                  offstyle="secondary"
+                />
+              </div>
+              
+              {/* Font size dropdown */}
+              <div className="dropdown">
+                <button 
+                  className="btn btn-outline-light dropdown-toggle" 
+                  type="button"
+                  onClick={() => setShowFontSizeDropdown(!showFontSizeDropdown)}
+                >
+                  {fontSize}px <ChevronDown size={16} />
+                </button>
+                {showFontSizeDropdown && (
+                  <ul className="dropdown-menu show" style={{ position: 'absolute', right: 0 }}>
+                    {[12, 14, 16, 18, 20, 22, 24].map(size => (
+                      <li key={size}>
+                        <button 
+                          className="dropdown-item" 
+                          type="button"
+                          onClick={() => {
+                            setFontSize(size);
+                            setShowFontSizeDropdown(false);
+                          }}
+                        >
+                          {size}px
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </div>
           </div>
           {/* Toggle sidebar button (visible on small screens) */}
           <button
@@ -572,14 +631,16 @@ export default function MultilingualVoiceChat() {
             stopSpeaking={stopSpeaking}
             speakMessage={speakMessage}
             chatEndRef={chatEndRef}
+            fontSize={fontSize}
           />
 
           {/* Input area */}
           <div
             className="p-3"
             style={{
-              backgroundColor: "rgba(255, 105, 180, 0.3)",
+              backgroundColor: "rgba(44, 44, 46, 0.8)", // Darker, semi-transparent background
               backdropFilter: "blur(10px)",
+              borderTop: "1px solid rgba(255, 255, 255, 0.1)", // Subtle top border
             }}
           >
             <div className="d-flex align-items-center">
@@ -604,16 +665,17 @@ export default function MultilingualVoiceChat() {
                 onKeyPress={handleKeyPress}
                 placeholder="Type your message here..."
                 style={{
-                  backgroundColor: "rgba(255, 255, 255, 0.2)",
+                  backgroundColor: "rgba(255, 255, 255, 0.1)", // Lighter input background
                   color: "white",
+                  border: "1px solid rgba(255, 255, 255, 0.2)", // Subtle border
                 }}
               />
               <div
                 className={`btn me-2`}
                 onClick={toggleListening}
                 style={{
-                  backgroundColor: isListening ? "dark" : "rgba(255, 255, 255, 0.1)",
-                  border: isListening ? "2px solid dark" : "2px solid rgba(255, 255, 255, 0.1)",
+                  backgroundColor: isListening ? "#3f3f41" : "rgba(255, 255, 255, 0.1)",
+                  border: isListening ? "2px solid #3f3f41" : "2px solid rgba(255, 255, 255, 0.1)",
                   transition: "background-color 0.3s, border 0.3s",
                 }}
               >

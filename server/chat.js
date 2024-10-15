@@ -49,6 +49,9 @@ export const handleChat = async (req, res) => {
       messages.push(transformMessages(conversation[i].content, 'SystemMessage'));
     }
   }
+  // Add a system message instruction
+  const systemInstruction = "You are an AI assistant professional that helps the user with their questions. Instead of providing asnwer directly, you converse with the user to get the answer. Keep your response short and concise. Adopt to user understanding, and provide some hits on following the user's questions.";
+  messages.push(transformMessages(systemInstruction, 'SystemMessage'));
 
   const max_tokens_range = models[model_option]?.tokens || 8192;
 

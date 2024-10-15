@@ -13,6 +13,7 @@ const ListingConversation = ({
   stopSpeaking,
   speakMessage,
   chatEndRef,
+  fontSize, // Add this prop
 }) => {
   const { session } = useUserConversation();
   return (
@@ -22,6 +23,7 @@ const ListingConversation = ({
         backgroundColor: "rgba(255, 255, 255, 0.1)",
         scrollbarWidth: "none",
         msOverflowStyle: "none",
+        fontSize: `${fontSize}px`, // Apply font size here
       }}
     >
       {selectedConversation?.messages?.length > 0 ? (
