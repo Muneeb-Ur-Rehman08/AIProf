@@ -27,7 +27,7 @@ app.use(express.static(path.join(parentDir, 'client/build')));
 
 app.use(
   cors({
-    origin: "http://localhost:3000", // Change to the URL of your frontend
+    origin: process.env.FRONTEND_URL, // Change to the URL of your frontend
     credentials: true, // Allow cookies to be sent with requests
   })
 );
