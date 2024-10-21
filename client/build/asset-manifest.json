@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.edd6b19b.css",
-    "main.js": "/static/js/main.ebec5aa6.js",
+    "main.js": "/static/js/main.2b16b532.js",
     "static/js/198.2e3c52f2.chunk.js": "/static/js/198.2e3c52f2.chunk.js",
     "static/js/453.9a4b989a.chunk.js": "/static/js/453.9a4b989a.chunk.js",
     "static/media/Whystudentchoose.png": "/static/media/Whystudentchoose.64d2cde4b1c935c6670c.png",
@@ -101,12 +101,12 @@
     "static/media/muteMic.svg": "/static/media/muteMic.a6235776b65e50a038644d32a492bb39.svg",
     "static/media/mic.svg": "/static/media/mic.6cdfe98a812481d1212bd3e34e4b2124.svg",
     "main.edd6b19b.css.map": "/static/css/main.edd6b19b.css.map",
-    "main.ebec5aa6.js.map": "/static/js/main.ebec5aa6.js.map",
+    "main.2b16b532.js.map": "/static/js/main.2b16b532.js.map",
     "198.2e3c52f2.chunk.js.map": "/static/js/198.2e3c52f2.chunk.js.map",
     "453.9a4b989a.chunk.js.map": "/static/js/453.9a4b989a.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.edd6b19b.css",
-    "static/js/main.ebec5aa6.js"
+    "static/js/main.2b16b532.js"
   ]
 }

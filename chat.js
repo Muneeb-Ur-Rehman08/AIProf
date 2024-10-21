@@ -30,6 +30,7 @@ function transformMessages(content, type) {
 }
 
 export const handleChat = async (req, res) => {
+  console.log("handleChat", req.body);
   const { model_option, prompt, user_id, conversation_id } = req.body;
 
   if (!req.session.messages) {
@@ -66,7 +67,11 @@ export const handleChat = async (req, res) => {
 
       res.setHeader('Content-Type', 'text/event-stream');
       res.setHeader('Connection', 'keep-alive');
-      res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+      if (process.env.BACKEND_URL) {
+        res.setHeader('Access-Control-Allow-Origin', process.env.BACKEND_URL);
+      } else {
+        res.setHeader('Access-Control-Allow-Origin', '*');
+      }
       res.setHeader('Access-Control-Allow-Credentials', 'true');
       res.flushHeaders();
       
