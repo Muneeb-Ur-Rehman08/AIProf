@@ -70,12 +70,12 @@ function App() {
 
   return (
     <Router>
-      <UserConversationProvider>
+      {/* <UserConversationProvider> */}
         <Routes>
           <Route path="/" element={<MainPage />} />
-          <Route path="/chat" element={<MultilingualVoiceChat />} />
+          {/* <Route path="/chat" element={<MultilingualVoiceChat />} /> */}
         </Routes>
-      </UserConversationProvider>
+      {/* </UserConversationProvider> */}
     </Router>
   );
 }
