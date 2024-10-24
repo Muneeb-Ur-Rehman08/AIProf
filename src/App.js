@@ -13,7 +13,7 @@ import { initParticlesEngine } from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
 import { WOW } from "wowjs";
 import MainPage from "./app/pages/main";
-import MultilingualVoiceChat from "./app/pages/chat.ai.tsx";
+import MultilingualVoiceChat from "./app/pages/chat.ai";
 import { createClient } from "@supabase/supabase-js";
 import { UserConversationProvider } from './app/context/UserConversationContext';
 

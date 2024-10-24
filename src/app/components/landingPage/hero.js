@@ -6,6 +6,9 @@ import muteMic from '../../../assets/images/mic/muteMic.svg';
 import classNameroomScenario from '../../../assets/images/sections-bg-images/classroomScenario.jpg';
 import TD_Animation_Style_Einstein_front from '../../../assets/images/hero/3D_Animation_Style_Einstein_front.png';
 import { useNavigate } from 'react-router-dom';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
+import ReactMarkdown from 'react-markdown';
 
 const Hero = () => {
   const [teacherName, setTeacherName] = useState('');
@@ -24,10 +27,43 @@ const Hero = () => {
     // Logic to handle teacher change can be added here
   };
 
-  const handleAsk = () => {
-    localStorage.setItem("teacherName", teacherName);
-    localStorage.setItem("question", question);
-    navigate(`/chat`);
+  const getAIResponse = async () => {
+    setResponse('');
+    setQuestion('');
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:8000/api/chat/`,
+        {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Request-Method': 'POST',
+            'Access-Control-Request-Headers': 'Content-Type',
+          },
+          body: JSON.stringify({
+            prompt: question,
+          }),
+        }
+      );
+  
+      if (!response.body) {
+        throw new Error("ReadableStream not supported");
+      }
+  
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder("utf-8");
+      let done = false;
+  
+      while (!done) {
+        const { value, done: doneReading } = await reader.read();
+        done = doneReading;
+        const chunk = decoder.decode(value, { stream: true });
+        setResponse(prev => prev + chunk);
+      }
+    } catch (error) {
+      console.error("Failed to get AI response:", error);
+      throw new Error("Failed to get AI response");
+    }
   };
 
   return (
@@ -126,7 +162,7 @@ const Hero = () => {
               <div className="askContainer">
                 <div className="askflex-container">
                   <input type="text" value={question} onChange={(e) => setQuestion(e.target.value)} id="question" placeholder="Enter your question..." aria-label="chatbot" autoComplete="off" />
-                  <button onClick={handleAsk} id="ask">
+                  <button onClick={getAIResponse} id="ask">
                     Ask
                   </button>
                   <div id="mic-container">
@@ -135,7 +171,13 @@ const Hero = () => {
                   </div>
                 </div>
                 <div id="loading-image"></div>
-                {response && <div id="response">{response}</div>}
+                {response && <div id="response">
+                  <ReactMarkdown
+                    children={response}
+                    remarkPlugins={[remarkMath]}
+                    rehypePlugins={[rehypeKatex]}
+                  />
+                </div>}
                 <div className="speech-control">
                   <div id="speaker-container"></div>
                   <select style={{ display: 'none' }}></select>
