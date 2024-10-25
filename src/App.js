@@ -69,15 +69,14 @@ function App() {
   }, []);
 
   return (
-    <MainPage />
-    // <Router>
-    //   <UserConversationProvider>
-    //     <Routes>
-    //       <Route path="/" element={<MainPage />} />
-    //       <Route path="/chat" element={<MultilingualVoiceChat />} />
-    //     </Routes>
-    //   </UserConversationProvider>
-    //  </Router>
+    <Router>
+      <UserConversationProvider>
+        <Routes>
+          <Route path="/" element={<MainPage />} />
+          <Route path="/chat" element={<MultilingualVoiceChat />} />
+        </Routes>
+      </UserConversationProvider>
+     </Router>
   );
 }
 
