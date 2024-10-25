@@ -5,7 +5,7 @@ import particalConfig from '../../particals/partical.config';
 import muteMic from '../../../assets/images/mic/muteMic.svg';
 import classNameroomScenario from '../../../assets/images/sections-bg-images/classroomScenario.jpg';
 import TD_Animation_Style_Einstein_front from '../../../assets/images/hero/3D_Animation_Style_Einstein_front.png';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import ReactMarkdown from 'react-markdown';
@@ -16,7 +16,7 @@ const Hero = () => {
   const [avatarVisible, setAvatarVisible] = useState(false);
   const [question, setQuestion] = useState('');
   const [response, setResponse] = useState('');
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const toggleInput = () => {
     setInputVisible(!inputVisible);
   };
