@@ -9,6 +9,8 @@ import TD_Animation_Style_Einstein_front from '../../../assets/images/hero/3D_An
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import ReactMarkdown from 'react-markdown';
+import { uuid_generate_v4 } from '../../../comon.lib';
+import CustomModal from '../chat/customChat/custom_chat';
 
 const Hero = () => {
   const [teacherName, setTeacherName] = useState('');
@@ -16,6 +18,8 @@ const Hero = () => {
   const [avatarVisible, setAvatarVisible] = useState(false);
   const [question, setQuestion] = useState('');
   const [response, setResponse] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false); // New state for modal visibility
   // const navigate = useNavigate();
   const toggleInput = () => {
     setInputVisible(!inputVisible);
@@ -30,6 +34,7 @@ const Hero = () => {
   const getAIResponse = async () => {
     setResponse('');
     setQuestion('');
+    setIsLoading(true);
     try {
       const response = await fetch(
         `http://127.0.0.1:8000/api/chat/`,
@@ -42,6 +47,7 @@ const Hero = () => {
           },
           body: JSON.stringify({
             prompt: question,
+            // conversation_id: uuid_generate_v4(),
           }),
         }
       );
@@ -63,10 +69,14 @@ const Hero = () => {
     } catch (error) {
       console.error("Failed to get AI response:", error);
       throw new Error("Failed to get AI response");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
+    <>
+    {isModalOpen && <CustomModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />}
     <section className="page-hero d-flex align-items-center" id="page-hero">
       <div className="overlay-photo-image-bg" style={{ backgroundImage: `url(${classNameroomScenario})`, opacity: 0.2 }}></div>
       {/* <div className="particles-js dots" id="particles-js"></div> */}
@@ -162,7 +172,7 @@ const Hero = () => {
               <div className="askContainer">
                 <div className="askflex-container">
                   <input type="text" value={question} onChange={(e) => setQuestion(e.target.value)} id="question" placeholder="Enter your question..." aria-label="chatbot" autoComplete="off" />
-                  <button onClick={getAIResponse} id="ask">
+                  <button onClick={() => setIsModalOpen(true)} id="ask" disabled={isLoading}>
                     Ask
                   </button>
                   <div id="mic-container">
@@ -188,6 +198,7 @@ const Hero = () => {
         </div>
       </div>
     </section>
+    </>
   );
 }
 
