@@ -65,7 +65,7 @@ export const UserConversationProvider = ({ children }) => {
 
   useEffect(() => {
     if (session && session?.user?.id && !conversations?.length) {
-      fetchHistory();
+      // fetchHistory();
     }
   }, [session, window.location.href]);
 

@@ -1,12 +1,20 @@
 /* COLORS */
 :root {
-  --softorange: #F4A259;
+  --main-dark: #37747a;
   --tomatored: #F25C66;
   --mediumblu: #1E272D;
+  --clr-main: #4ecddb;
 }
-
+/* 
 body {
   background-color: var(--mediumblu);
+} */
+
+.gradient-custom {
+  /* height: 100vh; */
+  /* width: 100vw; */
+  /* opacity: 0.9; */
+  /* z-index: 1000; */
 }
 
 .close-container {
@@ -23,7 +31,7 @@ body {
   width: 20px;
   position: absolute;
   /* margin-top: 4px; */
-  background-color: var(--softorange);
+  background-color: var(--clr-main);
   border-radius: 2px;
   transform: rotate(45deg);
   transition: all .3s ease-in;
@@ -34,10 +42,33 @@ body {
   width: 20px;
   position: absolute;
   /* margin-top: 24px; */
-  background-color: var(--softorange);
+  background-color: var(--clr-main);
   border-radius: 2px;
   transform: rotate(-45deg);
   transition: all .3s ease-in;
+}
+
+.close-container:hover .leftright,
+.close-container:hover .rightleft {
+  background-color: var(--tomatored) !important;
+}
+
+.mask-custom .border-bottom-color {
+  border-bottom: 2px solid var(--clr-main) !important;
+}
+
+.cursor-send {
+  cursor: pointer;
+  color: var(--clr-main);
+  font-size: 2rem;
+}
+
+.cursor-send:hover {
+  color: var(--main-dark);
+}
+
+.mask-custom .border-top-color {
+  border-top: 2px solid var(--clr-main) !important;
 }
 
 .close{
@@ -59,19 +90,23 @@ body {
 
 /* Custom Scrollbar Styles */
 .message-list {
-  max-height: none; /* Remove height restriction */
+  height: 80vh; /* Remove height restriction */
   overflow-y: hidden; /* Hide vertical overflow */
 }
 
 .mask-custom {
-  background: rgba(24, 24, 16, 0.2);
-  border-radius: 2em;
+  background: rgba(255, 255, 255, 0.2); /* Light color according to theme */
+  border-radius: 0.5rem;
   backdrop-filter: blur(15px);
-  border: 2px solid rgba(255, 255, 255, 0.05);
   background-clip: padding-box;
   box-shadow: 10px 10px 10px rgba(46, 54, 68, 0.03);
+  overflow: hidden !important;
 }
 
+.mask-custom p {
+  padding-left: 0.3rem;
+  padding-right: 0.3rem;
+}
 /* Add this CSS to your stylesheets */
 .modal {
 position: fixed; /* Use fixed to cover the entire viewport */
@@ -79,19 +114,20 @@ top: 0;
 left: 0;
 width: 100%;
 height: 100%;
-background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+background-color: rgba(0, 0, 0, 0.671); /* Semi-transparent background */
 display: flex;
 justify-content: center;
 align-items: center;
 z-index: 1050; /* Ensure it's above other content */
+overflow: hidden !important;
 }
 
 .modal-content {
 background-color: white;
 padding: 20px;
 border-radius: 8px;
-max-width: 500px;
-width: 100%;
+width: 900px !important;
+/* width: 100%; */
 max-height: 80vh; /* Limit the height to 80% of the viewport */
 overflow-y: auto; /* Enable vertical scrolling */
 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -100,6 +136,7 @@ box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 .message-list {
 max-height: 60vh; /* Adjust the height as needed */
 overflow-y: auto; /* Enable vertical scrolling */
+padding: 10px;
 }
 /* Add this CSS to your stylesheets */
 .body-no-scroll {
@@ -113,7 +150,23 @@ overflow: hidden;
 
 .message-list {
   -ms-overflow-style: none;
-  scrollbar-width: none;
+  /* scrollbar-width: none; */
+}
+
+
+.input-chat {
+  height: 50px;
+  border-radius: 10px;
+  
+}
+
+.bg-main {
+  background-color: var(--clr-main);
+}
+
+.header-chat, .footer-chat {
+  background-color: rgba(10, 10, 10, 0.49);
+  overflow: hidden !important;
 }
 
 

@@ -60,9 +60,6 @@
 #mic, #muteMic {
     width: 50px;
 }
-#mic {
-    display: none;
-}
 
 #speaker-container img
 {

@@ -10,10 +10,12 @@ import Faqs from '../components/landingPage/faqs';
 import Contact from '../components/landingPage/contact';
 import Footer from '../components/landingPage/footer';
 
+
 const MainPage = () => {
   const [startCounter, setStartCounter] = useState(false);
   const [activeSection, setActiveSection] = useState(null);
   const [showBackToTop, setShowBackToTop] = useState(false); // State to manage back-to-top button visibility
+
 
   const navigation = [
     { href: "#page-hero", label: "Hero" },

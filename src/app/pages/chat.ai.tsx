@@ -21,6 +21,7 @@ import SupabaseAuth from "../components/auth/supabase-auth";
 import "../../css/chat-layout.css";
 import SelectField from "../components/select-field";
 import BootstrapSwitchButton from "bootstrap-switch-button-react";
+import { initializeSpeechRecognition } from "../components/chat/webkitSpeechRecognition";
 
 const getAIResponse = async (
   userId: string,
@@ -109,32 +110,8 @@ export default function MultilingualVoiceChat() {
   }, [selectedConversation?.messages]);
 
   useEffect(() => {
-    if ("webkitSpeechRecognition" in window) {
-      recognitionRef.current = new (window as any).webkitSpeechRecognition();
-      recognitionRef.current.continuous = true;
-      recognitionRef.current.interimResults = true;
-      recognitionRef.current.lang = selectedLanguage;
-
-      recognitionRef.current.onresult = (event: any) => {
-        const transcript = Array.from(event.results)
-          .map((result: any) => result[0].transcript)
-          .join("");
-
-        setInputValue((prevInput) => transcript);
-      };
-
-      recognitionRef.current.onerror = (event: any) => {
-        console.error("Speech recognition error", event.error);
-        console.error("Failed to recognize speech. Please try again.");
-        setIsListening(false);
-      };
-
-      recognitionRef.current.onend = () => {
-        setIsListening(false);
-      };
-    } else {
-      console.error("Speech recognition not supported");
-    }
+    const recognition = initializeSpeechRecognition(selectedLanguage, setInputValue, setIsListening);
+    recognitionRef.current = recognition;
 
     if ("speechSynthesis" in window) {
       synthRef.current = window.speechSynthesis;
