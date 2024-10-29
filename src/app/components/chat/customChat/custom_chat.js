@@ -5,7 +5,6 @@ import {
   MDBCol,
   MDBCard,
   MDBCardBody,
-  MDBBtn,
   MDBTypography,
 } from "mdb-react-ui-kit";
 import "../../../../index.css";
@@ -16,9 +15,10 @@ import ReactMarkdown from "react-markdown";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import { LineWave } from "react-loader-spinner";
+import { Modal } from "react-bootstrap/Modal";
 
 
-export default function CustomChat({ isOpen, onClose, question }) {
+export default function CustomChat({ isOpen, onClose, question,ref,isListening,toggleListening,setIsListening,mic,muteMic }) {
   const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState();
   const [prompt, setPrompt] = useState(question);
@@ -168,13 +168,16 @@ export default function CustomChat({ isOpen, onClose, question }) {
   if (!isOpen) return null; // Render nothing if the modal is not open
 
   return (
-    // <MDBContainer fuid className=" gradient-custo">
-    <MDBRow center className="modal">
-      <MDBCol md="7" lg="6" xl="7" xxl="7" className="mb-4 mb-md-0">
+    <MDBContainer >
+    <MDBRow className="modal position-fixed d-flex justify-content-center align-items-center mx-auto">
+      <MDBCol md="7" lg="6" xl="7" xxl="7" className="chat-container">
         <MDBCard className="mask-custom">
           <MDBCardBody className="p-0">
-            <div className="d-flex justify-content-end mb-4 pt-4 pr-5 border-bottom-color header-chat">
-              <div className="close-container mb-4" onClick={onClose}>
+            <div className="d-flex justify-content-between justify-items-center p-2 border-bottom-color header-chat">
+              <h5 className="pt-2">AI Prof</h5>
+                {/* <IoCloseCircle className="leftright m-2" /> */}
+               
+              <div className="close-container" onClick={onClose}>
                 <div className="leftright"></div>
                 <div className="rightleft"></div>
               </div>
@@ -201,7 +204,7 @@ export default function CustomChat({ isOpen, onClose, question }) {
               {/* <li className="mb-3 border-top-color"> */}
               {/* <MDBTextArea label="Message" id="textAreaExample" rows={4} /> */}
               {/* </li> */}
-              <div className="d-flex align-items-center p-3 m-0 border-top-color footer-chat">
+              <div className="d-flex align-items-center p-3 m-0 mb-1 border-top-color footer-chat">
                 <input
                   type="text"
                   className="form-control me-2 input-chat shadow-lg"
@@ -209,6 +212,9 @@ export default function CustomChat({ isOpen, onClose, question }) {
                   value={prompt}
                   onChange={(e) => setPrompt(e.target.value)}
                 />
+                <div className="mic-container">
+                  <img className="" src={isListening ? mic : muteMic} id={isListening ? 'mic' : 'muteMic'} alt="" ref={ref} onClick={toggleListening} />
+                </div>
                 <div>
                   <FiSend
                     className="cursor-send shadow-lg"
@@ -221,7 +227,7 @@ export default function CustomChat({ isOpen, onClose, question }) {
         </MDBCard>
       </MDBCol>
     </MDBRow>
-    // </MDBContainer>
+    </MDBContainer>
   );
 }
 

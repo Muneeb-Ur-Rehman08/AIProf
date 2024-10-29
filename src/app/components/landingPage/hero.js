@@ -14,6 +14,7 @@ import { uuid_generate_v4 } from '../../../comon.lib';
 import CustomModal from '../chat/customChat/custom_chat';
 import { checkMicrophonePermission, requestMicrophonePermission } from '../chat/microphoneUtils';
 import { initializeSpeechRecognition } from '../chat/webkitSpeechRecognition';
+import { Button } from 'react-bootstrap/Button';
 
 const Hero = () => {
   const [teacherName, setTeacherName] = useState('');
@@ -166,7 +167,8 @@ const Hero = () => {
 
   return (
     <React.Fragment>
-      {isModalOpen && <CustomModal isOpen={isModalOpen} onClose={onCloseHandler} question={question} />} 
+      {isModalOpen && <CustomModal isOpen={isModalOpen} onClose={onCloseHandler} question={question} ref={canvasRef} setIsListening={setIsListening} isListening={isListening} toggleListening={toggleListening} mic={mic} muteMic={muteMic} />} 
+  
     <section className="page-hero d-flex align-items-center" id="page-hero">
       <div className="overlay-photo-image-bg" style={{ backgroundImage: `url(${classNameroomScenario})`, opacity: 0.2 }}></div>
       {/* <div className="particles-js dots" id="particles-js"></div> */}
