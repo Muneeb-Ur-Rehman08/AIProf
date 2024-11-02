@@ -117,7 +117,7 @@ export default function SupabaseAuth({ handleCancel, path }) {
                   },
                 },
               }}
-              redirectTo={`${process.env.REACT_APP_BACKEND_URL}${path}`}
+              redirectTo={`https://profai.netlify.app${path}`}
             />
           </div>
         </div>
