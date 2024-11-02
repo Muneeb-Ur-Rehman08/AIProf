@@ -1811,6 +1811,14 @@ body.rounded-btns .read-more {
   margin: 0;
   padding: 0;
 }
+.login-button {
+  background-color: var(--clr-main);
+  padding: 10px 15px !important;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 @media (max-width: 1199px) {
   .header-basic .links-list {
     position: absolute;
@@ -4747,6 +4755,32 @@ body.dark-theme .about .stats-counter.stats-cards .stat-box {
 .color-inherit {
   color: inherit !important;
   text-decoration: none !important;
+}
+
+.mutating-dots-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  position: absolute;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(0.5px);
+  z-index: 1000;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.chatbot-ui-listing {
+  margin-top: 20px;
+  height: 500px;
+  overflow-y: auto;
+  background-color: #1a1a1a;
+  border-radius: 10px;
+  padding: 10px;
+  width: 100%;
 }
 
 /*    End dark theme rules  *//*# sourceMappingURL=main-LTR.css.map */

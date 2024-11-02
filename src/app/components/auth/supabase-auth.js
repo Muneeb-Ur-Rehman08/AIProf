@@ -6,7 +6,7 @@ import { useUserConversation } from '../../context/UserConversationContext';
 import './index.css';
 import 'animate.css'; // Import animate.css for animations
 
-export default function SupabaseAuth({ handleCancel }) {
+export default function SupabaseAuth({ handleCancel, path }) {
   const userConversationContext = useUserConversation();
   const { session, supabase } = userConversationContext;
 
@@ -117,7 +117,7 @@ export default function SupabaseAuth({ handleCancel }) {
                   },
                 },
               }}
-              redirectTo={`${process.env.REACT_APP_BACKEND_URL}/chat`}
+              redirectTo={`${process.env.REACT_APP_BACKEND_URL}${path}`}
             />
           </div>
         </div>

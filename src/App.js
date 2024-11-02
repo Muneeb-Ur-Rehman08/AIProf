@@ -16,6 +16,8 @@ import MainPage from "./app/pages/main";
 import MultilingualVoiceChat from "./app/pages/chat.ai";
 import { createClient } from "@supabase/supabase-js";
 import { UserConversationProvider } from './app/context/UserConversationContext';
+import RAG from './app/pages/RAG';
+import { TeacherProvider } from './app/context/teacherContext';
 
 const themeStoredKey = "ThemeColor";
 const darkThemeClass = "dark-theme";
@@ -71,12 +73,15 @@ function App() {
   return (
     <Router>
       <UserConversationProvider>
-        <Routes>
-          <Route path="/" element={<MainPage />} />
-          <Route path="/chat" element={<MultilingualVoiceChat />} />
-        </Routes>
+        <TeacherProvider>
+          <Routes>
+            <Route path="/" element={<MainPage />} />
+            <Route path="/chat" element={<MultilingualVoiceChat />} />
+            <Route path="/rag" element={<RAG />} />
+          </Routes>
+        </TeacherProvider>
       </UserConversationProvider>
-     </Router>
+    </Router>
   );
 }
 

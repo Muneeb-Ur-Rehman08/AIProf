@@ -438,6 +438,7 @@ export default function MultilingualVoiceChat() {
       {showLoginModal && !session && (
           <SupabaseAuth 
             handleCancel={() => setShowLoginModal(false)}
+            path="/chat"
           />
       )}
       <div

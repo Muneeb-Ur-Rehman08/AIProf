@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import headerLogo from '../../../assets/images/logo/logo.svg';
+import { useNavigate } from 'react-router-dom';
+import { useUserConversation } from '../../context/UserConversationContext';
 
-const Header = () => {
+const Header = ({ openLoginForm, setOpenLoginForm }) => {
   const [isSticky, setIsSticky] = useState(false);
   const [activeLink, setActiveLink] = useState('');
-  const [menuOpen, setMenuOpen] = useState(false); 
+  const [menuOpen, setMenuOpen] = useState(false);
+  const { session } = useUserConversation();
+  const navigate = useNavigate();
 
   // Update the sticky header and active link based on scroll position
   const scrollHeader = () => {
@@ -26,6 +30,14 @@ const Header = () => {
     setActiveLink(current);
   };
 
+  const handleRAG = () => {
+    navigate('/rag');
+  };
+
+  const handleLoginForm = () => {
+    setOpenLoginForm(true);
+  };
+
   useEffect(() => {
     window.addEventListener("scroll", scrollHeader);
 
@@ -35,8 +47,9 @@ const Header = () => {
   }, []);
 
   return (
-    <header className={`header-basic ${isSticky ? 'is-sticky' : ''}`} id="page-header">
-      <div className="container">
+    <>
+      <header className={`header-basic ${isSticky ? 'is-sticky' : ''}`} id="page-header">
+        <div className="container">
         <nav className="menu-navbar" id="main-nav">
           <div className="header-logo">
             <a className="logo-link" href="#page-hero">
@@ -70,6 +83,13 @@ const Header = () => {
               </li>
             </ul>
           </div>
+          {!session ? <div className="login-button" onClick={handleLoginForm}>
+            Login
+          </div> : <>
+            <div className="login-button" onClick={handleRAG}>
+              RAG
+            </div>
+          </>}
 
           {/* Menu Toggler */}
           <div className="controls-box">
@@ -82,7 +102,8 @@ const Header = () => {
           </div>
         </nav>
       </div>
-    </header>
+      </header>
+    </>
   );
 };
 

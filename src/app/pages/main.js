@@ -9,12 +9,14 @@ import Testimonial from '../components/landingPage/testimonial';
 import Faqs from '../components/landingPage/faqs';
 import Contact from '../components/landingPage/contact';
 import Footer from '../components/landingPage/footer';
+import SupabaseAuth from '../components/auth/supabase-auth';
 
 
 const MainPage = () => {
   const [startCounter, setStartCounter] = useState(false);
   const [activeSection, setActiveSection] = useState(null);
   const [showBackToTop, setShowBackToTop] = useState(false); // State to manage back-to-top button visibility
+  const [openLoginForm, setOpenLoginForm] = useState(false);
 
 
   const navigation = [
@@ -63,7 +65,8 @@ const MainPage = () => {
 
   return (
     <React.Fragment>
-      <Header />
+      {openLoginForm ? <SupabaseAuth handleCancel={() => setOpenLoginForm(false)} path="/" /> : <>
+      <Header openLoginForm={openLoginForm} setOpenLoginForm={setOpenLoginForm} />
       <Hero />
       <Sponsers />
       <Services />
@@ -81,6 +84,8 @@ const MainPage = () => {
       >
         <i className="bi bi-arrow-up icon "></i>
       </div>
+      </>
+      }
     </React.Fragment>
   );
 };
