@@ -167,9 +167,16 @@ export default function CustomChat({ isOpen, onClose, question,ref,isListening,t
 
   if (!isOpen) return null; // Render nothing if the modal is not open
 
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault(); // Prevents the default action of the Enter key
+      getAIResponse();
+    }
+  };
+
   return (
     <MDBContainer >
-    <MDBRow className="modal position-fixed d-flex justify-content-center align-items-center mx-auto">
+    <MDBRow className="modal position-fixed d-flex justify-content-center align-items-center flex-wrap mx-auto">
       <MDBCol md="7" lg="6" xl="7" xxl="7" className="chat-container">
         <MDBCard className="mask-custom">
           <MDBCardBody className="p-0">
@@ -211,6 +218,7 @@ export default function CustomChat({ isOpen, onClose, question,ref,isListening,t
                   placeholder="Enter your Question"
                   value={prompt}
                   onChange={(e) => setPrompt(e.target.value)}
+                  onKeyDown={handleKeyPress}
                 />
                 <div className="mic-container">
                   <img className="" src={isListening ? mic : muteMic} id={isListening ? 'mic' : 'muteMic'} alt="" ref={ref} onClick={toggleListening} />
@@ -248,7 +256,7 @@ const MessageBody = ({ message }) => {
     >
       <div
         className={`mask-custom shadow-lg ${
-          message.sender === "user"
+          message.sender === "user" 
             ? "bg-main text-black font-weight-bol"
             : "bg-secondary"
         }`}

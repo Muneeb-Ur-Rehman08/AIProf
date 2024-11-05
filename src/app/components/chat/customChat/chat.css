@@ -89,12 +89,22 @@ body {
 
 /* Custom Scrollbar Styles */
 .message-list {
-  height: 50vh; /* Remove height restriction */
-  overflow-y: hidden; /* Hide vertical overflow */
+  height: 50vh; /* Set the maximum height */
+  overflow-y: auto;  /* Enable vertical scrolling */
+  padding: 10px;        /* Remove default padding */
+  margin: 0;         /* Remove default margin */
+  list-style: none;  /* Remove default list styling */
 }
 @media (max-width: 768px) {
   .message-list {
-    height: 77.4vh !important;
+    height: 79.6vh !important;
+  }
+}
+@media (max-width: 768px) {
+  .chat-container{
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+    border-radius: 0px !important;
   }
 }
 
