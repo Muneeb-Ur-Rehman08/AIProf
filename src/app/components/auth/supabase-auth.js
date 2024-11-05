@@ -1,10 +1,9 @@
-import { useState, useEffect } from 'react'
-import { createClient } from '@supabase/supabase-js'
-import { Auth } from '@supabase/auth-ui-react'
-import { ThemeSupa, ThemeMinimal } from '@supabase/auth-ui-shared'
-import { useUserConversation } from '../../context/UserConversationContext';
+import 'animate.css'; 
 import './index.css';
-import 'animate.css'; // Import animate.css for animations
+import { Auth } from '@supabase/auth-ui-react'
+import { ThemeSupa } from '@supabase/auth-ui-shared'
+import { useUserConversation } from '../../context/UserConversationContext';
+import TD_Animation_Style_Einstein_front from '../../../assets/images/hero/3D_Animation_Style_Einstein_front.png';
 
 export default function SupabaseAuth({ handleCancel, path }) {
   const userConversationContext = useUserConversation();
@@ -124,11 +123,12 @@ export default function SupabaseAuth({ handleCancel, path }) {
         <div className="col-lg-7 d-none d-lg-block mx-auto animate__animated animate__backInDown" style={{ marginTop: "13%", fontSize: "25px", width: "40%" }} id="testimonial-container" >
           <div className="testimonial p-4">
             <blockquote className="text-white mb-4">
-              Working with @supabase has been one of the best dev experiences I've had lately. Incredibly easy to set up, great documentation, and so many fewer hoops to jump through than the competition. I definitely plan to use it on any and all future projects.
+            Welcome to AIProf, we believe that artificial intelligence has the power to transform education and everyday life. Our goal is to make AI not just a concept but a practical tool that anyone can use and benefit from.
             </blockquote>
             <div className="d-flex align-items-center">
-              <img src="/placeholder.svg?height=48&width=48" alt="User Avatar" className="rounded-circle me-3" width="48" height="48" />
-              <span className="text-white">@thatguy_tex</span>
+              <img src={TD_Animation_Style_Einstein_front} alt="User Avatar" className="rounded-circle me-3" width="48" height="48" />
+              <span className="text-white">"Education with AIProf"
+              </span>
             </div>
           </div>
         </div>
