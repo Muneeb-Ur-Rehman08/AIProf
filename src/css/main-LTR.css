@@ -1810,14 +1810,17 @@ body.rounded-btns .read-more {
   justify-content: space-between;
   margin: 0;
   padding: 0;
-}
-.login-button {
+} 
+.header-basic .login-button {
   background-color: var(--clr-main);
-  padding: 10px 15px !important;
+  color: var(--clr-white);
+  padding: 6px 15px !important;
   border-radius: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+}
+
+.header-basic .login-button:hover {
+  background-color: var(--clr-white);
+  color: var(--clr-main);
 }
 @media (max-width: 1199px) {
   .header-basic .links-list {

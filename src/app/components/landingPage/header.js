@@ -83,8 +83,8 @@ const Header = ({ openLoginForm, setOpenLoginForm }) => {
               </li>
             </ul>
           </div>
-          {!session ? <div className="login-button" onClick={handleLoginForm}>
-            Login
+          {!session ? <div onClick={handleLoginForm}>
+            <button className="btn-outline cta-link cta-link-primary" >Login</button>
           </div> : <>
             <div className="login-button" onClick={handleRAG}>
               RAG

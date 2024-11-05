@@ -162,7 +162,9 @@ const Hero = () => {
 
   const handleKeyPress = (event) => {
     if (event?.key === 'Enter') {
-      setIsModalOpen(true);
+        setTimeout(() => {
+            setIsModalOpen(true);
+        }, 600); // Delay of 600 milliseconds
     }
   };
 
