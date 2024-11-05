@@ -160,6 +160,11 @@ const Hero = () => {
     setQuestion('');    
   }
 
+  const handleKeyPress = (event) => {
+    if (event?.key === 'Enter') {
+      setIsModalOpen(true);
+    }
+  };
 
   useEffect(() => {
     checkMicrophonePermission();
@@ -263,7 +268,7 @@ const Hero = () => {
 
               <div className="askContainer">
                 <div className="askflex-container">
-                  <input type="text" value={question} onChange={(e) => setQuestion(e.target.value)} id="question" placeholder="Enter your question..." aria-label="chatbot" autoComplete="off" />
+                  <input type="text" value={question} onChange={(e) => setQuestion(e.target.value)} id="question" onKeyDown={handleKeyPress} placeholder="Enter your question..." aria-label="chatbot" autoComplete="off" />
                   <button onClick={() => {setIsModalOpen(true); setIsListening(false);}} id="ask" disabled={isLoading}>
                     Ask
                   </button>

@@ -91,7 +91,7 @@ body {
 .message-list {
   height: 50vh; /* Set the maximum height */
   overflow-y: auto;  /* Enable vertical scrolling */
-  padding: 10px;        /* Remove default padding */
+  padding: 16px;        /* Remove default padding */
   margin: 0;         /* Remove default margin */
   list-style: none;  /* Remove default list styling */
 }
