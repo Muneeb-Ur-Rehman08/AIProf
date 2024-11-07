@@ -211,7 +211,7 @@ export default function CustomChat({ isOpen, onClose, question,ref,isListening,t
               {/* <li className="mb-3 border-top-color"> */}
               {/* <MDBTextArea label="Message" id="textAreaExample" rows={4} /> */}
               {/* </li> */}
-              <div className="d-flex align-items-center p-3 m-0 mb-1 border-top-color footer-chat">
+              <div className="d-flex align-items-center p-3 mb-1 border-top-color footer-chat">
                 <input
                   type="text"
                   className="form-control me-2 input-chat shadow-lg"
@@ -255,7 +255,7 @@ const MessageBody = ({ message }) => {
       } mb-4`}
     >
       <div
-        className={`mask-custom shadow-lg ${
+        className={`rounded-3 shadow-lg ${
           message.sender === "user" 
             ? "bg-main text-black font-weight-bol"
             : "bg-secondary"

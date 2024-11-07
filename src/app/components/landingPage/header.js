@@ -83,6 +83,10 @@ const Header = ({ openLoginForm, setOpenLoginForm }) => {
               </li>
             </ul>
           </div>
+
+          {/* Menu Toggler */}
+          <div className="d-flex align-items-center gap-5">
+
           {!session ? <div onClick={handleLoginForm}>
             <button className="btn-outline cta-link cta-link-primary" >Login</button>
           </div> : <>
@@ -91,7 +95,6 @@ const Header = ({ openLoginForm, setOpenLoginForm }) => {
             </div>
           </>}
 
-          {/* Menu Toggler */}
           <div className="controls-box">
           <div
               className={`control menu-toggler ${menuOpen ? 'close-menu' : ''}`}
@@ -99,6 +102,7 @@ const Header = ({ openLoginForm, setOpenLoginForm }) => {
             >
               <span></span><span></span><span></span>
             </div>
+          </div>
           </div>
         </nav>
       </div>
